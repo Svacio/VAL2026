@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message to Sayangku</title>
+    <style>
+        /* CSS Reset & Variables */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --pastel-pink: #ffd1dc;
+            --pastel-green: #b8e0d2;
+            --pastel-white: #fdfdfd;
+            --text-dark: #4a4a4a;
+            --error-red: #ff9eaa;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-green) 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-dark);
+            position: relative;
+        }
+
+        /* Animated Hearts Background */
+        .heart {
+            position: fixed;
+            bottom: -50px;
+            font-size: 1.5rem;
+            animation: floatUp linear infinite;
+            z-index: 0; 
+            pointer-events: none;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.5); opacity: 0; }
+            5% { opacity: 0.8; }
+            95% { opacity: 0.8; }
+            100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } 
+        }
+
+        /* Main Container/Glass Card */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 20px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            z-index: 10;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            transition: all 0.5s ease;
+        }
+
+        /* View 1: Lock Screen */
+        #view-1 {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #ff6b81;
+            margin-bottom: 5px;
+        }
+
+        p {
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .question {
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin: 10px 0;
+        }
+
+        input {
+            padding: 12px;
+            border-radius: 10px;
+            border: 2px solid var(--pastel-white);
+            background: rgba(255, 255, 255, 0.7);
+            font-size: 1.2rem;
+            text-align: center;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus {
+            border-color: #ff6b81;
+        }
+
+        .hint-text {
+            color: #e63946;
+            font-size: 0.85rem;
+            min-height: 40px;
+            font-style: italic;
+        }
+
+        /* Interactive Unlock Button */
+        button {
+            background: #ff6b81;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 10px auto 0;
+            box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4);
+            transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
+        }
+
+        button:hover:not(.shiny-btn) {
+            transform: scale(1.05);
+            background: #ff4760;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        /* Animations for Button */
+        .shake {
+            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
+        }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-2px, 0, 0); }
+            20%, 80% { transform: translate3d(4px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+            40%, 60% { transform: translate3d(6px, 0, 0); }
+        }
+
+        .shiny-btn {
+            background: #4CAF50 !important;
+            box-shadow: 0 0 20px rgba(76, 175, 80, 0.7), inset 0 0 10px rgba(255,255,255,0.4) !important;
+            animation: pulse-glow 1.5s infinite !important;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+            100% { transform: scale(1); }
+        }
+
+        /* View 2: Unlocked Content */
+        #view-2 {
+            display: none;
+            height: 70vh;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        /* Hide scrollbar for cleaner look */
+        #view-2::-webkit-scrollbar { display: none; }
+        #view-2 { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Flip Cards */
+        .card-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .flip-card {
+            background-color: transparent;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+            transform-style: preserve-3d;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-card-front, .flip-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .flip-card-front {
+            background-color: var(--pastel-white);
+            color: var(--text-dark);
+            background-size: cover;
+            background-position: center;
+        }
+
+        .click-hint {
+            position: absolute;
+            bottom: 15px;
+            background: rgba(255,255,255,0.7);
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #ff6b81;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .flip-card-back {
+            background-color: var(--pastel-green);
+            color: var(--text-dark);
+            transform: rotateY(180deg);
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="hearts-container"></div>
+
+    <div class="glass-card">
+        
+        <div id="view-1">
+            <h1>Message to Sayangku</h1>
+            <p>To unlock secret message provide a correct password (emoji)</p>
+            <p class="question">What does the 🐮 like?</p>
+            
+            <input type="text" id="passwordInput" placeholder="Enter emoji..." autocomplete="off">
+            <div id="hintBox" class="hint-text"></div>
+            
+            <button id="unlockBtn" onclick="checkPassword()">
+                <span id="lockIcon">🔒</span> <span id="btnText">Locked</span>
+            </button>
+        </div>
+
+        <div id="view-2">
+            <h2>Our Memories ❤️</h2>
+            <br>
+            <div class="card-grid">
+                
+                <div class="flip-card" onclick="this.classList.toggle('flipped'); this.classList.add('viewed'); checkAllViewed();">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front" style="background-color: #ffe4e1;">
+                            <p>[Photo 1 Placeholder]</p>
+                            <span class="click-hint">Tap to flip ✨</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>Your sweet message for photo 1 goes here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped'); this.classList.add('viewed'); checkAllViewed();">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front" style="background-color: #e0f2f1;">
+                            <p>[Photo 2 Placeholder]</p>
+                            <span class="click-hint">Tap to flip ✨</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>Your sweet message for photo 2 goes here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped'); this.classList.add('viewed'); checkAllViewed();">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front" style="background-color: #fff3e0;">
+                            <p>[Photo 3 Placeholder]</p>
+                            <span class="click-hint">Tap to flip ✨</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>Your sweet message for photo 3 goes here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped'); this.classList.add('viewed'); checkAllViewed();">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front" style="background-color: #f3e5f5;">
+                            <p>[Photo 4 Placeholder]</p>
+                            <span class="click-hint">Tap to flip ✨</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>Your sweet message for photo 4 goes here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped'); this.classList.add('viewed'); checkAllViewed();">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front" style="background-color: #e3f2fd;">
+                            <p>[Photo 5 Placeholder]</p>
+                            <span class="click-hint">Tap to flip ✨</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>Your sweet message for photo 5 goes here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped'); this.classList.add('viewed'); checkAllViewed();">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front" style="background-color: #f1f8e9;">
+                            <p>[Photo 6 Placeholder]</p>
+                            <span class="click-hint">Tap to flip ✨</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>Your sweet message for photo 6 goes here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped'); this.classList.add('viewed'); checkAllViewed();">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front" style="background-color: #fff8e1;">
+                            <p>[Photo 7 Placeholder]</p>
+                            <span class="click-hint">Tap to flip ✨</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>Your sweet message for photo 7 goes here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flip-card" onclick="this.classList.toggle('flipped'); this.classList.add('viewed'); checkAllViewed();">
+                    <div class="flip-card-inner">
+                        <div class="flip-card-front" style="background-color: #fce4ec;">
+                            <p>[Photo 8 Placeholder]</p>
+                            <span class="click-hint">Tap to flip ✨</span>
+                        </div>
+                        <div class="flip-card-back">
+                            <p>Your sweet message for photo 8 goes here...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button id="moreBtn" class="shiny-btn" style="display: none; margin: 15px auto; width: 100%; font-size: 1.1rem;">
+                    There is still more 🤭
+                </button>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Generate floating background hearts
+        const heartsContainer = document.getElementById('hearts-container');
+        const heartEmojis = ['🤍', '💚', '🩷','✨'];
+        
+        for (let i = 0; i < 20; i++) {
+            let heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+            
+            // Randomize position, size, and animation speed
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 6 + 6) + 's'; 
+            heart.style.animationDelay = (Math.random() * -15) + 's'; 
+            heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+            
+            heartsContainer.appendChild(heart);
+        }
+
+        // --- Nasłuchiwanie w czasie rzeczywistym na wpisywany tekst ---
+        const passwordInput = document.getElementById('passwordInput');
+        const unlockBtn = document.getElementById('unlockBtn');
+        const lockIcon = document.getElementById('lockIcon');
+        const btnText = document.getElementById('btnText');
+        const hintBox = document.getElementById('hintBox');
+
+        passwordInput.addEventListener('input', function() {
+            if (this.value.trim() === '🍄') {
+                lockIcon.innerText = '🔓';
+                btnText.innerText = 'Unlocked';
+                unlockBtn.classList.add('shiny-btn');
+                hintBox.innerText = "";
+            } else {
+                lockIcon.innerText = '🔒';
+                btnText.innerText = 'Locked';
+                unlockBtn.classList.remove('shiny-btn');
+            }
+        });
+
+        // Logic for unlocking
+        let failedAttempts = 0;
+        
+        function checkPassword() {
+            const input = passwordInput.value.trim();
+            
+            if (input === '🍄') {
+                // Success
+                setTimeout(() => {
+                    document.getElementById('view-1').style.display = 'none';
+                    document.getElementById('view-2').style.display = 'block';
+                    document.querySelector('.glass-card').style.height = '85vh'; 
+                }, 300);
+                
+            } else {
+                // Failed
+                failedAttempts++;
+                
+                unlockBtn.classList.add('shake');
+                
+                setTimeout(() => {
+                    unlockBtn.classList.remove('shake');
+                }, 400);
+
+                if (failedAttempts === 1) {
+                    hintBox.innerText = "Try again, next time I will give you a hint :)";
+                } else {
+                    hintBox.innerText = "Hint: I have a thick stem and a round cap, and sometimes I can get wet when things get exciting 😉";
+                }
+            }
+        }
+
+        // --- NOWE: Sprawdzanie czy obejrzano wszystkie zdjęcia ---
+        function checkAllViewed() {
+            // Liczy elementy, które dostały klasę 'viewed' po kliknięciu
+            const viewedCardsCount = document.querySelectorAll('.flip-card.viewed').length;
+            const moreBtn = document.getElementById('moreBtn');
+            
+            // Jeśli jest 8 obejrzanych kart i przycisk jest wciąż ukryty
+            if (viewedCardsCount === 8 && moreBtn.style.display === 'none') {
+                moreBtn.style.display = 'flex'; // Pokaż przycisk
+                
+                // Delikatnie przeskroluj w dół, żeby przycisk rzucił się w oczy
+                setTimeout(() => {
+                    const view2 = document.getElementById('view-2');
+                    view2.scrollTo({
+                        top: view2.scrollHeight,
+                        behavior: 'smooth'
+                    });
+                }, 150);
+            }
+        }
+    </script>
+</body>
+</html>
