@@ -1,14 +1,3 @@
-To achieve this, we will switch the card's height logic to `auto` immediately after unlocking.
-
-Here is why this works:
-
-1. **First View:** Remained untouched (it sizes itself based on the question/input).
-2. **Second View:** We set the container to `height: auto`. It will tightly wrap around the list (which is set to `55vh` to show 1.5 photos).
-3. **The Button:** Since the container is set to `auto`, when the button appears (changes from `display: none` to `block`), the glass card will automatically stretch just enough to include it, with no extra empty space below.
-
-Here is the complete code:
-
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -484,5 +473,3 @@ Here is the complete code:
     </script>
 </body>
 </html>
-
-```
