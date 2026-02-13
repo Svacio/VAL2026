@@ -56,7 +56,8 @@
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.6);
             border-radius: 20px;
-            padding: 2rem;
+            /* ZMIENIONE: Bardzo mały padding (odstęp wewnątrz ramki) */
+            padding: 15px; 
             width: 90%;
             max-width: 400px;
             text-align: center;
@@ -70,6 +71,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            padding: 1rem; /* Dodatkowy padding tylko dla ekranu blokady, żeby ładnie wyglądał */
         }
 
         h1 {
@@ -165,9 +167,10 @@
         /* View 2: Unlocked Content */
         #view-2 {
             display: none;
-            height: 70vh;
+            /* ZMIENIONE: Zmniejszone drastycznie do 40vh. To wymusi widok ok. 1.2 zdjęcia */
+            height: 40vh; 
             overflow-y: auto;
-            padding: 10px;
+            padding: 5px; /* Mniejszy padding wewnątrz scrolla */
         }
 
         /* Hide scrollbar for cleaner look */
@@ -178,7 +181,7 @@
         .card-grid {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px; /* Mniejszy odstęp między zdjęciami */
         }
 
         .flip-card {
@@ -430,7 +433,8 @@
                 setTimeout(() => {
                     document.getElementById('view-1').style.display = 'none';
                     document.getElementById('view-2').style.display = 'block';
-                    document.querySelector('.glass-card').style.height = '85vh'; 
+                    // ZMIENIONE: Wysokość całego kontenera zmniejszona do 55vh (bardzo kompaktowo)
+                    document.querySelector('.glass-card').style.height = '55vh'; 
                 }, 300);
                 
             } else {
@@ -451,17 +455,14 @@
             }
         }
 
-        // --- NOWE: Sprawdzanie czy obejrzano wszystkie zdjęcia ---
+        // --- Sprawdzanie czy obejrzano wszystkie zdjęcia ---
         function checkAllViewed() {
-            // Liczy elementy, które dostały klasę 'viewed' po kliknięciu
             const viewedCardsCount = document.querySelectorAll('.flip-card.viewed').length;
             const moreBtn = document.getElementById('moreBtn');
             
-            // Jeśli jest 8 obejrzanych kart i przycisk jest wciąż ukryty
             if (viewedCardsCount === 8 && moreBtn.style.display === 'none') {
-                moreBtn.style.display = 'flex'; // Pokaż przycisk
+                moreBtn.style.display = 'flex';
                 
-                // Delikatnie przeskroluj w dół, żeby przycisk rzucił się w oczy
                 setTimeout(() => {
                     const view2 = document.getElementById('view-2');
                     view2.scrollTo({
