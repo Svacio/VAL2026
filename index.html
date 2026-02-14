@@ -264,6 +264,10 @@
 </head>
 <body>
 
+    <audio id="bgMusic" loop autoplay>
+        <source src="song.mp3" type="audio/mpeg">
+    </audio>
+
     <div id="hearts-container"></div>
 
     <div class="glass-card">
@@ -402,6 +406,30 @@
             heartsContainer.appendChild(heart);
         }
 
+        // --- BACKGROUND MUSIC LOGIC ---
+        const bgMusic = document.getElementById('bgMusic');
+        
+        // 1. Try to play immediately (Autoplay)
+        bgMusic.play().catch(error => {
+            console.log("Browser blocked autoplay. Waiting for interaction.");
+        });
+
+        // 2. Failsafe: Play on first interaction (Click, Tap, or Keypress)
+        function startAudio() {
+            bgMusic.play().then(() => {
+                // Remove listeners once playing
+                document.removeEventListener('click', startAudio);
+                document.removeEventListener('touchstart', startAudio);
+                document.removeEventListener('keydown', startAudio);
+            }).catch(e => console.log("Still waiting..."));
+        }
+        
+        // Listen for any interaction
+        document.addEventListener('click', startAudio);
+        document.addEventListener('touchstart', startAudio);
+        document.addEventListener('keydown', startAudio);
+
+
         // --- Real-time input listener ---
         const passwordInput = document.getElementById('passwordInput');
         const unlockBtn = document.getElementById('unlockBtn');
@@ -449,7 +477,7 @@
                 if (failedAttempts === 1) {
                     hintBox.innerText = "Try again, next time I will give you a hint :)";
                 } else {
-                    hintBox.innerText = "Hint: I have a thick stem and a round cap, and sometimes I can get wet when things get exciting 😉";
+                    hintBox.innerText = "Hint: I have a thick hard stem and a red round cap, and sometimes I can get really excited 😉";
                 }
             }
         }
