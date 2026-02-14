@@ -192,7 +192,7 @@
         }
         
         .flip-card-front {
-            /* Restored background colors via inline styles in HTML, base here */
+            /* Background colors are set inline in the HTML */
             color: var(--text-dark);
             background-position: center;
             background-repeat: no-repeat;
@@ -334,7 +334,7 @@
             user-select: none;
         }
 
-        /* Player - SIZE 44px (10% Bigger) */
+        /* Player */
         #cowPlayer {
             position: absolute;
             width: 44px; 
@@ -401,8 +401,10 @@
             <h1>Valentine Message for Sayangku</h1>
             <p>To unlock secret message provide a correct password (emoji)</p>
             <p class="question">What does the 🐮 like?</p>
+            
             <input type="text" id="passwordInput" placeholder="Enter emoji..." autocomplete="off">
             <div id="hintBox" class="hint-text"></div>
+            
             <button id="unlockBtn" onclick="checkPassword()">
                 <span id="lockIcon">🔒</span> <span id="btnText">Locked</span>
             </button>
@@ -507,7 +509,9 @@
             </div>
         </div>
 
-    </div> <div id="controls-container">
+    </div> 
+    
+    <div id="controls-container">
         <div class="d-pad-btn" id="btn-up">▲</div>
         <div class="d-pad-btn" id="btn-left">◀</div>
         <div class="d-pad-btn" id="btn-right">▶</div>
@@ -530,12 +534,17 @@
             heartsContainer.appendChild(heart);
         }
 
-        // --- AUDIO ---
+        // --- AUDIO SETUP ---
         const bgMusic = document.getElementById('bgMusic');
         const eatSound = document.getElementById('eatSound');
-        bgMusic.play().catch(e => console.log("Waiting"));
+        
+        // 1. Try generic autoplay (often blocked on mobile)
+        bgMusic.play().catch(e => console.log("Autoplay blocked, waiting for interaction"));
+
+        // 2. Failsafe for mobile: Unlock audio on first touch/click
         function startAudio() {
             bgMusic.play().then(() => {
+                // Remove these listeners once audio starts successfully
                 document.removeEventListener('click', startAudio);
                 document.removeEventListener('touchstart', startAudio);
             }).catch(e => {});
@@ -567,6 +576,9 @@
         function checkPassword() {
             const input = passwordInput.value.trim();
             if (input === '🍄') {
+                // FIX FOR MOBILE AUDIO: Play music explicitly on button click
+                bgMusic.play().catch(e => console.log("Audio start error:", e));
+
                 setTimeout(() => {
                     document.getElementById('view-1').style.display = 'none';
                     document.getElementById('view-2').style.display = 'block';
