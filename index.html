@@ -176,6 +176,7 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+        
         .flip-card-front, .flip-card-back {
             position: absolute;
             width: 100%;
@@ -189,13 +190,15 @@
             justify-content: center;
             padding: 20px;
         }
+        
         .flip-card-front {
-            background-color: var(--pastel-white);
+            /* Restored background colors via inline styles in HTML, base here */
             color: var(--text-dark);
             background-position: center;
             background-repeat: no-repeat;
             background-size: 60%; 
         }
+        
         .click-hint {
             position: absolute;
             bottom: 15px;
@@ -212,6 +215,7 @@
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
+        
         .flip-card-back {
             background-color: var(--pastel-green);
             color: var(--text-dark);
@@ -330,10 +334,10 @@
             user-select: none;
         }
 
-        /* Player - UPDATED SIZE */
+        /* Player - SIZE 44px (10% Bigger) */
         #cowPlayer {
             position: absolute;
-            width: 44px; /* INCREASED by 10% */
+            width: 44px; 
             height: 44px;
             font-size: 35px;
             z-index: 10;
@@ -408,51 +412,59 @@
             <h2>Some special words 🩷</h2>
             <br>
             <div class="card-grid">
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
-                        <div class="flip-card-front" style="background-image: url('flowers.png');"><span class="click-hint">Tap to flip ✨</span></div>
+                        <div class="flip-card-front" style="background-color: #ffe4e1; background-image: url('flowers.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Can't wait for the time, when I can finally bring Lien her favourite flowers, at the times, when you're feeling sick, or in pain, in happy moments and special occasions juga... or just spontaneously to express my endless gratitude towards you for being such an amazing person</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
-                        <div class="flip-card-front" style="background-image: url('holdheart.png');"><span class="click-hint">Tap to flip ✨</span></div>
+                        <div class="flip-card-front" style="background-color: #e0f2f1; background-image: url('holdheart.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Besides the flowers, I want to give you all the love I have, cuz you deserve it all &lt;3</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
-                        <div class="flip-card-front" style="background-image: url('shinycow.png');"><span class="click-hint">Tap to flip ✨</span></div>
+                        <div class="flip-card-front" style="background-color: #fff3e0; background-image: url('shinycow.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Still can't believe what a lucky men I am, not only you have extraordinary and wise mind, but so breathtaking on the outside juga ✨</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
-                        <div class="flip-card-front" style="background-image: url('holdmushroom.png');"><span class="click-hint">Tap to flip ✨</span></div>
+                        <div class="flip-card-front" style="background-color: #f3e5f5; background-image: url('holdmushroom.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Adam mau to always hold each other back... just like lien holds 🍄 at night.</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
-                        <div class="flip-card-front" style="background-image: url('hornycow.png');"><span class="click-hint">Tap to flip ✨</span></div>
+                        <div class="flip-card-front" style="background-color: #e3f2fd; background-image: url('hornycow.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Let's always be honest about our feelings... either if its sedih, rindu, joy, love or even horny 😊</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
-                        <div class="flip-card-front" style="background-image: url('yesyou.png');"><span class="click-hint">Tap to flip ✨</span></div>
+                        <div class="flip-card-front" style="background-color: #f1f8e9; background-image: url('yesyou.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>AND REMEMBER!!! You're always enough and never too much for adam ❤️</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
-                        <div class="flip-card-front" style="background-image: url('turtle.png');"><span class="click-hint">Tap to flip ✨</span></div>
+                        <div class="flip-card-front" style="background-color: #fff8e1; background-image: url('turtle.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Itu adam 98% of the time with Lien 🤭</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
-                        <div class="flip-card-front" style="background-image: url('ringcat.png');"><span class="click-hint">Tap to flip ✨</span></div>
+                        <div class="flip-card-front" style="background-color: #fce4ec; background-image: url('ringcat.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>You are mine... my wifey 🥰</p></div>
                     </div>
                 </div>
@@ -692,8 +704,8 @@
 
         // --- VIEW 4: MUSHROOM GAME LOGIC ---
         
-        // Game State - UPDATED SPEED AND SIZE
-        const player = { x: 600, y: 600, speed: 4, size: 44 }; // Speed 5->4, Size 40->44
+        // Game State - 20% slower speed (4), 10% bigger size (44)
+        const player = { x: 600, y: 600, speed: 4, size: 44 };
         const mapSize = 1200;
         const obstacles = [];
         const collectibles = [];
@@ -717,6 +729,11 @@
             const mapEl = document.getElementById('gameMap');
             // Clear everything except player
             mapEl.innerHTML = '<div id="cowPlayer">🐄</div>';
+            
+            // FIX: Set Initial Position immediately
+            const playerEl = document.getElementById('cowPlayer');
+            playerEl.style.left = player.x + 'px';
+            playerEl.style.top = player.y + 'px';
             
             // 1. House (Center)
             createObject('🏠', 560, 500, 80, true); 
@@ -751,6 +768,9 @@
                     }
                 }
             }
+            
+            // FIX: Update camera immediately to prevent jump
+            updateCamera();
         }
 
         function createObject(emoji, x, y, size, isSolid, isCollectable = false) {
@@ -796,9 +816,9 @@
             const newY = player.y + dy;
             const playerEl = document.getElementById('cowPlayer');
 
-            // UPDATED MIRROR LOGIC
-            if (dx < 0) playerEl.style.transform = "scaleX(1)"; // Left = Normal Face (Left)
-            if (dx > 0) playerEl.style.transform = "scaleX(-1)"; // Right = Flipped Face (Right)
+            // REVERSED MIRROR LOGIC
+            if (dx < 0) playerEl.style.transform = "scaleX(1)"; // Left = Normal Face
+            if (dx > 0) playerEl.style.transform = "scaleX(-1)"; // Right = Flipped Face
 
             // Boundary Check
             if (newX < 0 || newX > mapSize - player.size || newY < 0 || newY > mapSize - player.size) return;
@@ -858,6 +878,8 @@
                     collectedCount++;
                     document.getElementById('mushroomCounter').innerText = `🍄: ${collectedCount}/15`;
                     
+                    // FIX: Play sound immediately on collision
+                    eatSound.pause();
                     eatSound.currentTime = 0;
                     eatSound.play().catch(e=>{});
 
