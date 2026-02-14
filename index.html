@@ -56,7 +56,7 @@
         .rain-heart {
             position: fixed;
             top: -50px;
-            font-size: 2rem; /* Big hearts */
+            font-size: 2rem;
             animation: fallDown linear forwards;
             z-index: 9999; /* On top of everything */
             pointer-events: none;
@@ -206,8 +206,8 @@
             padding: 20px;
         }
         
+        /* Inline styles in HTML control background color now, but these are defaults */
         .flip-card-front {
-            /* Background colors handled inline in HTML to match user request */
             color: var(--text-dark);
             background-position: center;
             background-repeat: no-repeat;
@@ -327,7 +327,7 @@
             position: relative;
             background: #a8d5ba;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
-            flex-shrink: 0; /* Prevent shrinking */
+            flex-shrink: 0; 
         }
 
         /* The Big Map */
@@ -363,7 +363,7 @@
             transition: top 0.1s linear, left 0.1s linear; 
         }
 
-        /* Victory Screen (Overlay on View 4) */
+        /* Victory Screen (Overlay inside View 4) */
         #victory-screen {
             display: none;
             flex-direction: column;
@@ -373,6 +373,7 @@
             padding: 20px;
             text-align: center;
             height: 100%;
+            width: 100%;
         }
 
         #victory-screen .trophy {
@@ -458,8 +459,10 @@
             <h1>Valentine Message for Sayangku</h1>
             <p>To unlock secret message provide a correct password (emoji)</p>
             <p class="question">What does the 🐮 like?</p>
+            
             <input type="text" id="passwordInput" placeholder="Enter emoji..." autocomplete="off">
             <div id="hintBox" class="hint-text"></div>
+            
             <button id="unlockBtn" onclick="checkPassword()">
                 <span id="lockIcon">🔒</span> <span id="btnText">Locked</span>
             </button>
@@ -783,7 +786,7 @@
 
         // --- VIEW 4: MUSHROOM GAME LOGIC ---
         
-        // Game State
+        // Game State - 20% slower speed (4), 10% bigger size (44)
         const player = { x: 600, y: 600, speed: 4, size: 44 };
         const mapSize = 1200;
         const obstacles = [];
@@ -795,10 +798,10 @@
         function initView4() {
             document.getElementById('view-3').style.display = 'none';
             document.getElementById('view-4').style.display = 'flex';
-            document.getElementById('controls-container').style.display = 'block'; 
+            document.getElementById('controls-container').style.display = 'block'; // Show Controls
             
             generateMap();
-            showPopup("Try to find them all!", 20000); 
+            showPopup("Try to find them all!", 20000); // 20s Popup
             
             // Start Loop
             requestAnimationFrame(gameLoop);
@@ -806,14 +809,18 @@
 
         function generateMap() {
             const mapEl = document.getElementById('gameMap');
+            // Clear everything except player
             mapEl.innerHTML = '<div id="cowPlayer">🐄</div>';
             
+            // FIX: Set Initial Position immediately
             const playerEl = document.getElementById('cowPlayer');
             playerEl.style.left = player.x + 'px';
             playerEl.style.top = player.y + 'px';
             
+            // 1. House (Center)
             createObject('🏠', 560, 500, 80, true); 
 
+            // 2. Obstacles (Trees/Rocks)
             const obsTypes = ['🌲','🌳','🪨'];
             for(let i=0; i<40; i++) {
                 let x = Math.random() * (mapSize - 50);
@@ -822,6 +829,7 @@
                 createObject(obsTypes[Math.floor(Math.random()*3)], x, y, 40, true);
             }
 
+            // 3. Decorations (Flowers) - Walkable
             const decTypes = ['🌹','🌷','🌻'];
             for(let i=0; i<60; i++) {
                 let x = Math.random() * (mapSize - 30);
@@ -829,6 +837,7 @@
                 createObject(decTypes[Math.floor(Math.random()*3)], x, y, 25, false);
             }
 
+            // 4. Collectibles (Mushrooms)
             for(let i=0; i<15; i++) {
                 let placed = false;
                 while(!placed) {
@@ -841,6 +850,8 @@
                     }
                 }
             }
+            
+            // FIX: Update camera immediately to prevent jump
             updateCamera();
         }
 
@@ -854,19 +865,31 @@
             el.style.height = size + 'px';
             el.style.fontSize = (size * 0.8) + 'px';
             document.getElementById('gameMap').appendChild(el);
-            if(isSolid) obstacles.push({ x, y, size });
+            
+            if(isSolid) {
+                obstacles.push({ x, y, size });
+            }
             return el;
         }
 
         function gameLoop() {
-            let dx = 0; let dy = 0;
+            let dx = 0;
+            let dy = 0;
+
             if (keys.up) dy -= player.speed;
             if (keys.down) dy += player.speed;
             if (keys.left) dx -= player.speed;
             if (keys.right) dx += player.speed;
 
-            if(dx !== 0 && dy !== 0) { dx *= 0.707; dy *= 0.707; }
-            if (dx !== 0 || dy !== 0) movePlayer(dx, dy);
+            if(dx !== 0 && dy !== 0) {
+                dx *= 0.707;
+                dy *= 0.707;
+            }
+
+            if (dx !== 0 || dy !== 0) {
+                movePlayer(dx, dy);
+            }
+
             requestAnimationFrame(gameLoop);
         }
 
@@ -875,17 +898,26 @@
             const newY = player.y + dy;
             const playerEl = document.getElementById('cowPlayer');
 
-            if (dx < 0) playerEl.style.transform = "scaleX(1)"; 
-            if (dx > 0) playerEl.style.transform = "scaleX(-1)"; 
+            // REVERSED MIRROR LOGIC
+            if (dx < 0) playerEl.style.transform = "scaleX(1)"; // Left = Normal Face
+            if (dx > 0) playerEl.style.transform = "scaleX(-1)"; // Right = Flipped Face
 
+            // Boundary Check
             if (newX < 0 || newX > mapSize - player.size || newY < 0 || newY > mapSize - player.size) return;
 
+            // Obstacle Collision
             const pRect = { x: newX + 5, y: newY + 5, w: player.size - 10, h: player.size - 10 }; 
+            
             for (let obs of obstacles) {
-                if (pRect.x < obs.x + obs.size && pRect.x + pRect.w > obs.x &&
-                    pRect.y < obs.y + obs.size && pRect.y + pRect.h > obs.y) return; 
+                if (pRect.x < obs.x + obs.size &&
+                    pRect.x + pRect.w > obs.x &&
+                    pRect.y < obs.y + obs.size &&
+                    pRect.y + pRect.h > obs.y) {
+                    return; 
+                }
             }
 
+            // Move
             player.x = newX;
             player.y = newY;
             playerEl.style.left = player.x + 'px';
@@ -898,12 +930,18 @@
         function updateCamera() {
             const viewport = document.querySelector('.game-viewport');
             const map = document.getElementById('gameMap');
+            
             let camX = -(player.x - viewport.clientWidth / 2 + player.size / 2);
             let camY = -(player.y - viewport.clientHeight / 2 + player.size / 2);
+
             const minX = -(mapSize - viewport.clientWidth);
             const minY = -(mapSize - viewport.clientHeight);
-            if (camX > 0) camX = 0; if (camX < minX) camX = minX;
-            if (camY > 0) camY = 0; if (camY < minY) camY = minY;
+            
+            if (camX > 0) camX = 0;
+            if (camX < minX) camX = minX;
+            if (camY > 0) camY = 0;
+            if (camY < minY) camY = minY;
+
             map.style.transform = `translate(${camX}px, ${camY}px)`;
         }
 
@@ -912,14 +950,17 @@
                 let m = collectibles[i];
                 if (m.collected) continue;
 
-                if (player.x < m.x + m.size && player.x + player.size > m.x &&
-                    player.y < m.y + m.size && player.y + player.size > m.y) {
+                if (player.x < m.x + m.size &&
+                    player.x + player.size > m.x &&
+                    player.y < m.y + m.size &&
+                    player.y + player.size > m.y) {
                     
                     m.collected = true;
                     m.el.style.display = 'none';
                     collectedCount++;
                     document.getElementById('mushroomCounter').innerText = `🍄: ${collectedCount}/15`;
                     
+                    // FIX: Play sound immediately on collision
                     eatSound.pause();
                     eatSound.currentTime = 0;
                     eatSound.play().catch(e=>{});
