@@ -19,6 +19,7 @@
             --pastel-white: #fdfdfd;
             --text-dark: #4a4a4a;
             --error-red: #ff9eaa;
+            --strong-pink: #ff6b81;
         }
 
         body {
@@ -65,11 +66,11 @@
             transition: all 0.5s ease;
             display: flex;
             flex-direction: column;
-            /* Height is determined by content automatically */
             height: auto; 
+            position: relative; /* For popup positioning */
         }
 
-        /* View 1: Lock Screen */
+        /* --- VIEW 1 STYLES --- */
         #view-1 {
             display: flex;
             flex-direction: column;
@@ -77,22 +78,9 @@
             padding: 1rem; 
         }
 
-        h1 {
-            font-size: 1.8rem;
-            color: #ff6b81;
-            margin-bottom: 5px;
-        }
-
-        p {
-            font-size: 0.95rem;
-            line-height: 1.4;
-        }
-
-        .question {
-            font-weight: bold;
-            font-size: 1.1rem;
-            margin: 10px 0;
-        }
+        h1 { font-size: 1.8rem; color: var(--strong-pink); margin-bottom: 5px; }
+        p { font-size: 0.95rem; line-height: 1.4; }
+        .question { font-weight: bold; font-size: 1.1rem; margin: 10px 0; }
 
         input {
             padding: 12px;
@@ -104,10 +92,7 @@
             outline: none;
             transition: 0.3s;
         }
-
-        input:focus {
-            border-color: #ff6b81;
-        }
+        input:focus { border-color: var(--strong-pink); }
 
         .hint-text {
             color: #e63946;
@@ -116,9 +101,9 @@
             font-style: italic;
         }
 
-        /* Interactive Unlock Button */
+        /* Button Styles */
         button {
-            background: #ff6b81;
+            background: var(--strong-pink);
             color: white;
             border: none;
             padding: 12px 25px;
@@ -133,26 +118,16 @@
             box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4);
             transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
         }
-
-        button:hover:not(.shiny-btn) {
+        button:hover:not(.shiny-btn):not(:disabled) {
             transform: scale(1.05);
             background: #ff4760;
         }
-
-        button:active {
-            transform: scale(0.95);
-        }
-
-        /* Animations for Button */
-        .shake {
-            animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both;
-        }
-
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-2px, 0, 0); }
-            20%, 80% { transform: translate3d(4px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
-            40%, 60% { transform: translate3d(6px, 0, 0); }
+        button:active { transform: scale(0.95); }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         .shiny-btn {
@@ -167,27 +142,20 @@
             100% { transform: scale(1); }
         }
 
-        /* View 2: Unlocked Content */
+        /* --- VIEW 2 STYLES --- */
         #view-2 {
             display: none;
-            /* Keeps the list height fixed to show 1.5 photos */
             height: 55vh; 
             overflow-y: auto;
             padding: 5px; 
             margin-bottom: 5px; 
         }
-
-        /* Hide scrollbar for cleaner look */
         #view-2::-webkit-scrollbar { display: none; }
         #view-2 { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Flip Cards */
-        .card-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 15px; 
-        }
+        .card-grid { display: flex; flex-direction: column; gap: 15px; }
 
+        /* Flip Card Styles */
         .flip-card {
             background-color: transparent;
             width: 100%;
@@ -195,7 +163,6 @@
             perspective: 1000px;
             cursor: pointer;
         }
-
         .flip-card-inner {
             position: relative;
             width: 100%;
@@ -206,11 +173,7 @@
             border-radius: 15px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-
-        .flip-card.flipped .flip-card-inner {
-            transform: rotateY(180deg);
-        }
-
+        .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
         .flip-card-front, .flip-card-back {
             position: absolute;
             width: 100%;
@@ -224,16 +187,13 @@
             justify-content: center;
             padding: 20px;
         }
-
         .flip-card-front {
             background-color: var(--pastel-white);
             color: var(--text-dark);
-            /* Standard settings for centering PNGs */
             background-position: center;
             background-repeat: no-repeat;
             background-size: 60%; 
         }
-
         .click-hint {
             position: absolute;
             bottom: 15px;
@@ -242,23 +202,99 @@
             border-radius: 15px;
             font-size: 0.8rem;
             font-weight: bold;
-            color: #ff6b81;
+            color: var(--strong-pink);
             animation: pulse 1.5s infinite;
         }
-
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.05); }
             100% { transform: scale(1); }
         }
-
         .flip-card-back {
             background-color: var(--pastel-green);
             color: var(--text-dark);
             transform: rotateY(180deg);
             font-size: 1.1rem;
-            /* Added padding for text */
             padding: 20px; 
+        }
+
+        /* --- VIEW 3 STYLES (TIC TAC TOE) --- */
+        #view-3 {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            padding: 10px;
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--strong-pink);
+            border-bottom: 2px solid rgba(255,255,255,0.5);
+            padding-bottom: 10px;
+        }
+
+        #gameCaption {
+            font-size: 1rem;
+            margin: 5px 0;
+            min-height: 24px;
+        }
+
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            margin: 10px auto;
+            width: 100%;
+            max-width: 300px;
+            aspect-ratio: 1 / 1;
+        }
+
+        .cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            cursor: pointer;
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+            transition: background 0.3s;
+            /* Grid Lines Logic using borders */
+            border: 2px solid var(--strong-pink);
+        }
+
+        .cell:hover {
+            background: rgba(255,255,255,0.6);
+        }
+        
+        /* Occupied cell style */
+        .cell.taken {
+            cursor: default;
+        }
+
+        /* Cute Popup Message */
+        .popup-msg {
+            position: absolute;
+            top: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            font-weight: bold;
+            color: var(--strong-pink);
+            white-space: nowrap;
+            z-index: 100;
+            animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        @keyframes popIn {
+            0% { transform: translateX(-50%) scale(0); opacity: 0; }
+            100% { transform: translateX(-50%) scale(1); opacity: 1; }
         }
     </style>
 </head>
@@ -382,14 +418,37 @@
             </div>
         </div>
 
-        <button id="moreBtn" class="shiny-btn" style="display: none; margin: 15px auto 0; width: 80%; font-size: 1.1rem;">
+        <button id="moreBtn" class="shiny-btn" onclick="showView3()" style="display: none; margin: 15px auto 0; width: 80%; font-size: 1.1rem;">
             There is still more 🤭
         </button>
+
+        <div id="view-3">
+            <div class="game-header">
+                <span>Tic Tac Toe Game</span>
+                <span id="scoreCounter">🏆: 0/3</span>
+            </div>
+            
+            <p id="gameCaption">Win 3 times to proceed 🤭</p>
+            
+            <div class="game-board" id="gameBoard">
+                <div class="cell" onclick="handleCellClick(0)"></div>
+                <div class="cell" onclick="handleCellClick(1)"></div>
+                <div class="cell" onclick="handleCellClick(2)"></div>
+                <div class="cell" onclick="handleCellClick(3)"></div>
+                <div class="cell" onclick="handleCellClick(4)"></div>
+                <div class="cell" onclick="handleCellClick(5)"></div>
+                <div class="cell" onclick="handleCellClick(6)"></div>
+                <div class="cell" onclick="handleCellClick(7)"></div>
+                <div class="cell" onclick="handleCellClick(8)"></div>
+            </div>
+
+            <button id="gameStartBtn" class="shiny-btn" onclick="startGame()">START GAME</button>
+        </div>
 
     </div>
 
     <script>
-        // Generate floating background hearts
+        // --- ANIMATIONS & SETUP ---
         const heartsContainer = document.getElementById('hearts-container');
         const heartEmojis = ['🤍', '💚', '🩷','✨'];
         
@@ -397,41 +456,28 @@
             let heart = document.createElement('div');
             heart.classList.add('heart');
             heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
-            
-            // Randomize position, size, and animation speed
             heart.style.left = Math.random() * 100 + 'vw';
             heart.style.animationDuration = (Math.random() * 6 + 6) + 's'; 
             heart.style.animationDelay = (Math.random() * -15) + 's'; 
             heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
-            
             heartsContainer.appendChild(heart);
         }
 
-        // --- BACKGROUND MUSIC LOGIC ---
+        // --- AUDIO ---
         const bgMusic = document.getElementById('bgMusic');
-        
-        // 1. Try to play immediately (Autoplay)
-        bgMusic.play().catch(error => {
-            console.log("Browser blocked autoplay. Waiting for interaction.");
-        });
-
-        // 2. Failsafe: Play on first interaction (Click, Tap, or Keypress)
+        bgMusic.play().catch(e => console.log("Waiting for interaction"));
         function startAudio() {
             bgMusic.play().then(() => {
-                // Remove listeners once playing
                 document.removeEventListener('click', startAudio);
                 document.removeEventListener('touchstart', startAudio);
                 document.removeEventListener('keydown', startAudio);
-            }).catch(e => console.log("Still waiting..."));
+            }).catch(e => {});
         }
-        
-        // Listen for any interaction
         document.addEventListener('click', startAudio);
         document.addEventListener('touchstart', startAudio);
         document.addEventListener('keydown', startAudio);
 
-
-        // --- Real-time input listener ---
+        // --- VIEW 1 LOGIC ---
         const passwordInput = document.getElementById('passwordInput');
         const unlockBtn = document.getElementById('unlockBtn');
         const lockIcon = document.getElementById('lockIcon');
@@ -451,47 +497,178 @@
             }
         });
 
-        // Logic for unlocking
         let failedAttempts = 0;
-        
         function checkPassword() {
             const input = passwordInput.value.trim();
-            
             if (input === '🍄') {
-                // Success
                 setTimeout(() => {
                     document.getElementById('view-1').style.display = 'none';
                     document.getElementById('view-2').style.display = 'block';
-                    
-                    // "auto" forces the card to shrink to exactly fit the list + padding.
                     document.querySelector('.glass-card').style.height = 'auto'; 
                 }, 300);
-                
             } else {
-                // Failed
                 failedAttempts++;
                 unlockBtn.classList.add('shake');
-                setTimeout(() => {
-                    unlockBtn.classList.remove('shake');
-                }, 400);
-
-                if (failedAttempts === 1) {
-                    hintBox.innerText = "Try again, next time I will give you a hint :)";
-                } else {
-                    hintBox.innerText = "Hint: I have a thick hard stem and a red round cap, and sometimes I can get really excited 😉";
-                }
+                setTimeout(() => unlockBtn.classList.remove('shake'), 400);
+                hintBox.innerText = failedAttempts === 1 
+                    ? "Try again, next time I will give you a hint :)" 
+                    : "Hint: I have a thick hard stem and a red round cap, and sometimes I can get really excited 😉";
             }
         }
 
-        // --- Check if all photos viewed ---
         function checkAllViewed() {
-            const viewedCardsCount = document.querySelectorAll('.flip-card.viewed').length;
-            const moreBtn = document.getElementById('moreBtn');
-            
-            if (viewedCardsCount === 8 && moreBtn.style.display === 'none') {
-                moreBtn.style.display = 'flex';
-                // Because card height is "auto", it will simply grow to fit this button.
+            const viewed = document.querySelectorAll('.flip-card.viewed').length;
+            const btn = document.getElementById('moreBtn');
+            if (viewed === 8 && btn.style.display === 'none') {
+                btn.style.display = 'flex';
             }
+        }
+
+        // --- VIEW TRANSITION TO GAME ---
+        function showView3() {
+            document.getElementById('view-2').style.display = 'none';
+            document.getElementById('moreBtn').style.display = 'none';
+            document.getElementById('view-3').style.display = 'flex';
+            document.querySelector('.glass-card').style.height = 'auto';
+        }
+
+        // --- TIC TAC TOE LOGIC ---
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let gameActive = false;
+        let score = 0;
+        const winningScore = 3;
+        const playerIcon = '🐮';
+        const computerIcon = '🍄';
+        const winConditions = [
+            [0,1,2], [3,4,5], [6,7,8], // Rows
+            [0,3,6], [1,4,7], [2,5,8], // Cols
+            [0,4,8], [2,4,6]           // Diags
+        ];
+        const popups = [
+            "So proud of you <3",
+            "I always believe in you",
+            "Never give up sayang!"
+        ];
+
+        function startGame() {
+            // Reset Board
+            board = ['', '', '', '', '', '', '', '', ''];
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.innerText = '';
+                cell.classList.remove('taken');
+            });
+            document.getElementById('gameCaption').innerText = "Win 3 times to proceed 🤭";
+            
+            const btn = document.getElementById('gameStartBtn');
+            btn.innerText = "YOU CAN DO IT!";
+            btn.disabled = true;
+            btn.classList.remove('shiny-btn');
+            btn.style.background = '#ccc';
+
+            gameActive = true;
+
+            // Computer places first move immediately
+            setTimeout(computerMove, 300);
+        }
+
+        function handleCellClick(index) {
+            if (!gameActive || board[index] !== '') return;
+
+            // Player Move
+            placeMark(index, playerIcon);
+            if (checkWin()) return;
+
+            // Computer Move
+            setTimeout(computerMove, 500);
+        }
+
+        function placeMark(index, mark) {
+            board[index] = mark;
+            const cell = document.getElementsByClassName('cell')[index];
+            cell.innerText = mark;
+            cell.classList.add('taken');
+        }
+
+        function computerMove() {
+            if (!gameActive) return;
+
+            // Find empty spots
+            const emptyIndices = board.map((val, idx) => val === '' ? idx : null).filter(val => val !== null);
+            
+            if (emptyIndices.length > 0) {
+                const randomIdx = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+                placeMark(randomIdx, computerIcon);
+                checkWin();
+            }
+        }
+
+        function checkWin() {
+            let roundWon = false;
+            let winner = null;
+
+            for (let i = 0; i < winConditions.length; i++) {
+                const [a, b, c] = winConditions[i];
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    roundWon = true;
+                    winner = board[a];
+                    break;
+                }
+            }
+
+            if (roundWon) {
+                endGame(winner);
+                return true;
+            }
+
+            if (!board.includes('')) {
+                endGame('draw');
+                return true;
+            }
+            return false;
+        }
+
+        function endGame(winner) {
+            gameActive = false;
+            const caption = document.getElementById('gameCaption');
+            const btn = document.getElementById('gameStartBtn');
+
+            if (winner === playerIcon) {
+                score++;
+                document.getElementById('scoreCounter').innerText = `🏆: ${score}/${winningScore}`;
+                caption.innerText = "🐮 won!";
+                showPopup();
+            } else if (winner === computerIcon) {
+                caption.innerText = "🍄 won!";
+            } else {
+                caption.innerText = "It's a draw!";
+            }
+
+            // Reset Button State
+            if (score >= winningScore) {
+                btn.innerText = "Ready for more?";
+                btn.disabled = false;
+                btn.style.background = ''; // reset to css
+                btn.classList.add('shiny-btn');
+                btn.onclick = () => alert("Proceeding to View 4... (coming soon!)"); 
+            } else {
+                btn.innerText = "START GAME";
+                btn.disabled = false;
+                btn.style.background = ''; // reset to css
+                btn.classList.add('shiny-btn');
+            }
+        }
+
+        function showPopup() {
+            const msg = popups[Math.floor(Math.random() * popups.length)];
+            const popupEl = document.createElement('div');
+            popupEl.classList.add('popup-msg');
+            popupEl.innerText = msg;
+            
+            document.querySelector('.glass-card').appendChild(popupEl);
+            
+            setTimeout(() => {
+                popupEl.remove();
+            }, 2500);
         }
     </script>
 </body>
