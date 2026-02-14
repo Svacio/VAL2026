@@ -35,7 +35,7 @@
             position: relative;
         }
 
-        /* Animated Hearts Background (Permanent Background) */
+        /* Animated Hearts Background */
         .heart {
             position: fixed;
             bottom: -50px;
@@ -52,13 +52,13 @@
             100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } 
         }
 
-        /* --- HEART RAIN EFFECT (View 5 Animation) --- */
+        /* --- NEW: HEART RAIN ANIMATION --- */
         .rain-heart {
             position: fixed;
             top: -50px;
             font-size: 2rem;
             animation: fallDown linear forwards;
-            z-index: 9999; /* On top of everything */
+            z-index: 9999;
             pointer-events: none;
         }
 
@@ -206,8 +206,8 @@
             padding: 20px;
         }
         
-        /* Inline styles in HTML control background color now, but these are defaults */
         .flip-card-front {
+            /* Background colors handled inline in HTML to match user request */
             color: var(--text-dark);
             background-position: center;
             background-repeat: no-repeat;
@@ -363,7 +363,7 @@
             transition: top 0.1s linear, left 0.1s linear; 
         }
 
-        /* Victory Screen (Overlay inside View 4) */
+        /* --- VICTORY SCREEN (Hidden inside View 4) --- */
         #victory-screen {
             display: none;
             flex-direction: column;
@@ -400,7 +400,7 @@
             font-size: 1.1rem;
             line-height: 1.6;
             color: var(--text-dark);
-            opacity: 0; /* Start hidden for animation */
+            opacity: 0; /* Hidden initially */
             transition: opacity 2s ease-in;
         }
 
@@ -555,11 +555,13 @@
         </div>
 
         <div id="view-4">
+            
             <div id="game-ui">
                 <div class="header-bar">
                     <span>Mushroom Picking</span>
                     <span id="mushroomCounter">🍄: 0/15</span>
                 </div>
+                
                 <div class="game-viewport">
                     <div id="gameMap">
                         <div id="cowPlayer">🐄</div>
@@ -572,6 +574,7 @@
                 <div class="trophy">🏆</div>
                 <button class="shiny-btn" onclick="showView5()" style="margin-top: 20px;">Last but not least..</button>
             </div>
+
         </div>
 
         <div id="view-5">
