@@ -35,7 +35,7 @@
             position: relative;
         }
 
-        /* Animated Hearts Background */
+        /* Animated Hearts Background (Slow, Permanent) */
         .heart {
             position: fixed;
             bottom: -50px;
@@ -50,6 +50,21 @@
             5% { opacity: 0.8; }
             95% { opacity: 0.8; }
             100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } 
+        }
+
+        /* --- HEART RAIN EFFECT (Fast, Temporary) --- */
+        .rain-heart {
+            position: fixed;
+            top: -50px;
+            font-size: 2rem;
+            animation: fallDown linear forwards;
+            z-index: 9999; /* On top of everything */
+            pointer-events: none;
+        }
+
+        @keyframes fallDown {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
 
         /* Main Container/Glass Card */
@@ -192,7 +207,7 @@
         }
         
         .flip-card-front {
-            /* Background colors are set inline in the HTML */
+            /* Background colors set inline in HTML */
             color: var(--text-dark);
             background-position: center;
             background-repeat: no-repeat;
@@ -347,6 +362,22 @@
             transition: top 0.1s linear, left 0.1s linear; 
         }
 
+        /* VICTORY SCREEN OVERLAY */
+        #victory-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #victory-screen .trophy {
+            font-size: 80px;
+            animation: pulse-glow 2s infinite;
+        }
+
         /* --- CONTROLS (D-PAD) --- */
         #controls-container {
             display: none; 
@@ -381,6 +412,29 @@
         #btn-left { top: 50px; left: 0; }
         #btn-right { top: 50px; right: 0; }
 
+        /* --- VIEW 5: FINAL NOTE --- */
+        #view-5 {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            height: 100%;
+        }
+
+        #final-note {
+            background: #fff0f5;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px dashed var(--strong-pink);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            opacity: 0; /* Hidden initially */
+            transition: opacity 2s ease-in;
+        }
+
     </style>
 </head>
 <body>
@@ -393,6 +447,7 @@
     </audio>
 
     <div id="hearts-container"></div>
+    <div id="rain-container"></div>
 
     <div class="glass-card">
         
@@ -421,49 +476,42 @@
                         <div class="flip-card-back"><p>Can't wait for the time, when I can finally bring Lien her favourite flowers, at the times, when you're feeling sick, or in pain, in happy moments and special occasions juga... or just spontaneously to express my endless gratitude towards you for being such an amazing person</p></div>
                     </div>
                 </div>
-                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #e0f2f1; background-image: url('holdheart.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Besides the flowers, I want to give you all the love I have, cuz you deserve it all &lt;3</p></div>
                     </div>
                 </div>
-                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #fff3e0; background-image: url('shinycow.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Still can't believe what a lucky men I am, not only you have extraordinary and wise mind, but so breathtaking on the outside juga ✨</p></div>
                     </div>
                 </div>
-                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #f3e5f5; background-image: url('holdmushroom.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Adam mau to always hold each other back... just like lien holds 🍄 at night.</p></div>
                     </div>
                 </div>
-                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #e3f2fd; background-image: url('hornycow.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Let's always be honest about our feelings... either if its sedih, rindu, joy, love or even horny 😊</p></div>
                     </div>
                 </div>
-                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #f1f8e9; background-image: url('yesyou.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>AND REMEMBER!!! You're always enough and never too much for adam ❤️</p></div>
                     </div>
                 </div>
-                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #fff8e1; background-image: url('turtle.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Itu adam 98% of the time with Lien 🤭</p></div>
                     </div>
                 </div>
-                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #fce4ec; background-image: url('ringcat.png');"><span class="click-hint">Tap to flip ✨</span></div>
@@ -497,21 +545,34 @@
         </div>
 
         <div id="view-4">
-            <div class="header-bar">
-                <span>Mushroom Picking</span>
-                <span id="mushroomCounter">🍄: 0/15</span>
-            </div>
-            
-            <div class="game-viewport">
-                <div id="gameMap">
-                    <div id="cowPlayer">🐄</div>
+            <div id="game-ui">
+                <div class="header-bar">
+                    <span>Mushroom Picking</span>
+                    <span id="mushroomCounter">🍄: 0/15</span>
                 </div>
+                <div class="game-viewport">
+                    <div id="gameMap">
+                        <div id="cowPlayer">🐄</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="victory-screen">
+                <h1 style="font-size: 1.8rem;">Congrats Sayang !!!</h1>
+                <div class="trophy">🏆</div>
+                <button class="shiny-btn" onclick="showView5()">Last but not least..</button>
             </div>
         </div>
 
-    </div> 
-    
-    <div id="controls-container">
+        <div id="view-5">
+            <div id="final-note">
+                <p>I spent my entire life wishing for someone like you.. So don't ever think for a second that I would ever give up on you. Not today. Not tommorow... Not for the rest of my life.</p>
+                <br>
+                <p style="font-weight: bold; color: var(--strong-pink);">I love you sangat sangat sayangku 🩷</p>
+            </div>
+        </div>
+
+    </div> <div id="controls-container">
         <div class="d-pad-btn" id="btn-up">▲</div>
         <div class="d-pad-btn" id="btn-left">◀</div>
         <div class="d-pad-btn" id="btn-right">▶</div>
@@ -534,17 +595,12 @@
             heartsContainer.appendChild(heart);
         }
 
-        // --- AUDIO SETUP ---
+        // --- AUDIO ---
         const bgMusic = document.getElementById('bgMusic');
         const eatSound = document.getElementById('eatSound');
-        
-        // 1. Try generic autoplay (often blocked on mobile)
-        bgMusic.play().catch(e => console.log("Autoplay blocked, waiting for interaction"));
-
-        // 2. Failsafe for mobile: Unlock audio on first touch/click
+        bgMusic.play().catch(e => console.log("Waiting"));
         function startAudio() {
             bgMusic.play().then(() => {
-                // Remove these listeners once audio starts successfully
                 document.removeEventListener('click', startAudio);
                 document.removeEventListener('touchstart', startAudio);
             }).catch(e => {});
@@ -576,8 +632,8 @@
         function checkPassword() {
             const input = passwordInput.value.trim();
             if (input === '🍄') {
-                // FIX FOR MOBILE AUDIO: Play music explicitly on button click
-                bgMusic.play().catch(e => console.log("Audio start error:", e));
+                // Audio force play
+                bgMusic.play().catch(e => {});
 
                 setTimeout(() => {
                     document.getElementById('view-1').style.display = 'none';
@@ -739,10 +795,8 @@
 
         function generateMap() {
             const mapEl = document.getElementById('gameMap');
-            // Clear everything except player
             mapEl.innerHTML = '<div id="cowPlayer">🐄</div>';
             
-            // FIX: Set Initial Position immediately
             const playerEl = document.getElementById('cowPlayer');
             playerEl.style.left = player.x + 'px';
             playerEl.style.top = player.y + 'px';
@@ -780,8 +834,6 @@
                     }
                 }
             }
-            
-            // FIX: Update camera immediately to prevent jump
             updateCamera();
         }
 
@@ -795,31 +847,19 @@
             el.style.height = size + 'px';
             el.style.fontSize = (size * 0.8) + 'px';
             document.getElementById('gameMap').appendChild(el);
-            
-            if(isSolid) {
-                obstacles.push({ x, y, size });
-            }
+            if(isSolid) obstacles.push({ x, y, size });
             return el;
         }
 
         function gameLoop() {
-            let dx = 0;
-            let dy = 0;
-
+            let dx = 0; let dy = 0;
             if (keys.up) dy -= player.speed;
             if (keys.down) dy += player.speed;
             if (keys.left) dx -= player.speed;
             if (keys.right) dx += player.speed;
 
-            if(dx !== 0 && dy !== 0) {
-                dx *= 0.707;
-                dy *= 0.707;
-            }
-
-            if (dx !== 0 || dy !== 0) {
-                movePlayer(dx, dy);
-            }
-
+            if(dx !== 0 && dy !== 0) { dx *= 0.707; dy *= 0.707; }
+            if (dx !== 0 || dy !== 0) movePlayer(dx, dy);
             requestAnimationFrame(gameLoop);
         }
 
@@ -828,26 +868,17 @@
             const newY = player.y + dy;
             const playerEl = document.getElementById('cowPlayer');
 
-            // REVERSED MIRROR LOGIC
-            if (dx < 0) playerEl.style.transform = "scaleX(1)"; // Left = Normal Face
-            if (dx > 0) playerEl.style.transform = "scaleX(-1)"; // Right = Flipped Face
+            if (dx < 0) playerEl.style.transform = "scaleX(1)"; 
+            if (dx > 0) playerEl.style.transform = "scaleX(-1)"; 
 
-            // Boundary Check
             if (newX < 0 || newX > mapSize - player.size || newY < 0 || newY > mapSize - player.size) return;
 
-            // Obstacle Collision
             const pRect = { x: newX + 5, y: newY + 5, w: player.size - 10, h: player.size - 10 }; 
-            
             for (let obs of obstacles) {
-                if (pRect.x < obs.x + obs.size &&
-                    pRect.x + pRect.w > obs.x &&
-                    pRect.y < obs.y + obs.size &&
-                    pRect.y + pRect.h > obs.y) {
-                    return; 
-                }
+                if (pRect.x < obs.x + obs.size && pRect.x + pRect.w > obs.x &&
+                    pRect.y < obs.y + obs.size && pRect.y + pRect.h > obs.y) return; 
             }
 
-            // Move
             player.x = newX;
             player.y = newY;
             playerEl.style.left = player.x + 'px';
@@ -860,18 +891,12 @@
         function updateCamera() {
             const viewport = document.querySelector('.game-viewport');
             const map = document.getElementById('gameMap');
-            
             let camX = -(player.x - viewport.clientWidth / 2 + player.size / 2);
             let camY = -(player.y - viewport.clientHeight / 2 + player.size / 2);
-
             const minX = -(mapSize - viewport.clientWidth);
             const minY = -(mapSize - viewport.clientHeight);
-            
-            if (camX > 0) camX = 0;
-            if (camX < minX) camX = minX;
-            if (camY > 0) camY = 0;
-            if (camY < minY) camY = minY;
-
+            if (camX > 0) camX = 0; if (camX < minX) camX = minX;
+            if (camY > 0) camY = 0; if (camY < minY) camY = minY;
             map.style.transform = `translate(${camX}px, ${camY}px)`;
         }
 
@@ -880,25 +905,62 @@
                 let m = collectibles[i];
                 if (m.collected) continue;
 
-                if (player.x < m.x + m.size &&
-                    player.x + player.size > m.x &&
-                    player.y < m.y + m.size &&
-                    player.y + player.size > m.y) {
+                if (player.x < m.x + m.size && player.x + player.size > m.x &&
+                    player.y < m.y + m.size && player.y + player.size > m.y) {
                     
                     m.collected = true;
                     m.el.style.display = 'none';
                     collectedCount++;
                     document.getElementById('mushroomCounter').innerText = `🍄: ${collectedCount}/15`;
                     
-                    // FIX: Play sound immediately on collision
                     eatSound.pause();
                     eatSound.currentTime = 0;
                     eatSound.play().catch(e=>{});
 
                     if(collectedCount === 15) {
-                        alert("You found them all! Happy Valentine's Day Sayangku! ❤️");
+                        gameWon();
                     }
                 }
+            }
+        }
+
+        function gameWon() {
+            // Hide Game UI, Show Victory Screen
+            document.getElementById('game-ui').style.display = 'none';
+            document.getElementById('controls-container').style.display = 'none';
+            document.getElementById('victory-screen').style.display = 'flex';
+        }
+
+        // --- VIEW 5 TRANSITION ---
+        function showView5() {
+            document.getElementById('view-4').style.display = 'none';
+            document.getElementById('view-5').style.display = 'flex';
+            
+            // Start Crazy Rain
+            startHeartRain();
+
+            // Reveal Note after 3 seconds
+            setTimeout(() => {
+                document.getElementById('final-note').style.opacity = '1';
+            }, 3000);
+        }
+
+        function startHeartRain() {
+            const rainContainer = document.getElementById('rain-container');
+            const emojis = ['🩷', '💖', '💝', '💕', '💗'];
+            
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('rain-heart');
+                    heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    heart.style.animationDuration = (Math.random() * 2 + 1) + 's'; // 1-3s drop
+                    rainContainer.appendChild(heart);
+                    
+                    // Remove after falling
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 30); // Stagger creation
             }
         }
 
