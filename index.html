@@ -35,7 +35,7 @@
             position: relative;
         }
 
-        /* Animated Hearts Background (Slow, Permanent) */
+        /* Animated Hearts Background (Permanent Background) */
         .heart {
             position: fixed;
             bottom: -50px;
@@ -52,18 +52,18 @@
             100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } 
         }
 
-        /* --- HEART RAIN EFFECT (Fast, Temporary) --- */
+        /* --- HEART RAIN EFFECT (View 5 Animation) --- */
         .rain-heart {
             position: fixed;
             top: -50px;
-            font-size: 2rem;
+            font-size: 2rem; /* Big hearts */
             animation: fallDown linear forwards;
             z-index: 9999; /* On top of everything */
             pointer-events: none;
         }
 
         @keyframes fallDown {
-            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
             100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
         }
 
@@ -207,7 +207,7 @@
         }
         
         .flip-card-front {
-            /* Background colors set inline in HTML */
+            /* Background colors handled inline in HTML to match user request */
             color: var(--text-dark);
             background-position: center;
             background-repeat: no-repeat;
@@ -327,6 +327,7 @@
             position: relative;
             background: #a8d5ba;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            flex-shrink: 0; /* Prevent shrinking */
         }
 
         /* The Big Map */
@@ -349,7 +350,7 @@
             user-select: none;
         }
 
-        /* Player */
+        /* Player - SIZE 44px */
         #cowPlayer {
             position: absolute;
             width: 44px; 
@@ -362,7 +363,7 @@
             transition: top 0.1s linear, left 0.1s linear; 
         }
 
-        /* VICTORY SCREEN OVERLAY */
+        /* Victory Screen (Overlay on View 4) */
         #victory-screen {
             display: none;
             flex-direction: column;
@@ -371,11 +372,35 @@
             gap: 20px;
             padding: 20px;
             text-align: center;
+            height: 100%;
         }
 
         #victory-screen .trophy {
             font-size: 80px;
             animation: pulse-glow 2s infinite;
+        }
+
+        /* --- VIEW 5 STYLES (FINAL NOTE) --- */
+        #view-5 {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            height: 100%;
+        }
+
+        #final-note {
+            background: #fff0f5;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px dashed var(--strong-pink);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            opacity: 0; /* Start hidden for animation */
+            transition: opacity 2s ease-in;
         }
 
         /* --- CONTROLS (D-PAD) --- */
@@ -412,29 +437,6 @@
         #btn-left { top: 50px; left: 0; }
         #btn-right { top: 50px; right: 0; }
 
-        /* --- VIEW 5: FINAL NOTE --- */
-        #view-5 {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            text-align: center;
-            height: 100%;
-        }
-
-        #final-note {
-            background: #fff0f5;
-            padding: 25px;
-            border-radius: 15px;
-            border: 2px dashed var(--strong-pink);
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: var(--text-dark);
-            opacity: 0; /* Hidden initially */
-            transition: opacity 2s ease-in;
-        }
-
     </style>
 </head>
 <body>
@@ -456,10 +458,8 @@
             <h1>Valentine Message for Sayangku</h1>
             <p>To unlock secret message provide a correct password (emoji)</p>
             <p class="question">What does the 🐮 like?</p>
-            
             <input type="text" id="passwordInput" placeholder="Enter emoji..." autocomplete="off">
             <div id="hintBox" class="hint-text"></div>
-            
             <button id="unlockBtn" onclick="checkPassword()">
                 <span id="lockIcon">🔒</span> <span id="btnText">Locked</span>
             </button>
@@ -476,42 +476,49 @@
                         <div class="flip-card-back"><p>Can't wait for the time, when I can finally bring Lien her favourite flowers, at the times, when you're feeling sick, or in pain, in happy moments and special occasions juga... or just spontaneously to express my endless gratitude towards you for being such an amazing person</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #e0f2f1; background-image: url('holdheart.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Besides the flowers, I want to give you all the love I have, cuz you deserve it all &lt;3</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #fff3e0; background-image: url('shinycow.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Still can't believe what a lucky men I am, not only you have extraordinary and wise mind, but so breathtaking on the outside juga ✨</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #f3e5f5; background-image: url('holdmushroom.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Adam mau to always hold each other back... just like lien holds 🍄 at night.</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #e3f2fd; background-image: url('hornycow.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Let's always be honest about our feelings... either if its sedih, rindu, joy, love or even horny 😊</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #f1f8e9; background-image: url('yesyou.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>AND REMEMBER!!! You're always enough and never too much for adam ❤️</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #fff8e1; background-image: url('turtle.png');"><span class="click-hint">Tap to flip ✨</span></div>
                         <div class="flip-card-back"><p>Itu adam 98% of the time with Lien 🤭</p></div>
                     </div>
                 </div>
+                
                 <div class="flip-card" onclick="flip(this)">
                     <div class="flip-card-inner">
                         <div class="flip-card-front" style="background-color: #fce4ec; background-image: url('ringcat.png');"><span class="click-hint">Tap to flip ✨</span></div>
@@ -558,9 +565,9 @@
             </div>
 
             <div id="victory-screen">
-                <h1 style="font-size: 1.8rem;">Congrats Sayang !!!</h1>
+                <h1 style="font-size: 1.8rem; margin-bottom: 20px;">Congrats Sayang !!!</h1>
                 <div class="trophy">🏆</div>
-                <button class="shiny-btn" onclick="showView5()">Last but not least..</button>
+                <button class="shiny-btn" onclick="showView5()" style="margin-top: 20px;">Last but not least..</button>
             </div>
         </div>
 
@@ -572,7 +579,9 @@
             </div>
         </div>
 
-    </div> <div id="controls-container">
+    </div> 
+    
+    <div id="controls-container">
         <div class="d-pad-btn" id="btn-up">▲</div>
         <div class="d-pad-btn" id="btn-left">◀</div>
         <div class="d-pad-btn" id="btn-right">▶</div>
@@ -595,10 +604,12 @@
             heartsContainer.appendChild(heart);
         }
 
-        // --- AUDIO ---
+        // --- AUDIO SETUP ---
         const bgMusic = document.getElementById('bgMusic');
         const eatSound = document.getElementById('eatSound');
-        bgMusic.play().catch(e => console.log("Waiting"));
+        
+        bgMusic.play().catch(e => console.log("Autoplay blocked, waiting for interaction"));
+
         function startAudio() {
             bgMusic.play().then(() => {
                 document.removeEventListener('click', startAudio);
@@ -632,8 +643,8 @@
         function checkPassword() {
             const input = passwordInput.value.trim();
             if (input === '🍄') {
-                // Audio force play
-                bgMusic.play().catch(e => {});
+                // MOBILE AUDIO FIX
+                bgMusic.play().catch(e => console.log("Audio start error:", e));
 
                 setTimeout(() => {
                     document.getElementById('view-1').style.display = 'none';
@@ -772,7 +783,7 @@
 
         // --- VIEW 4: MUSHROOM GAME LOGIC ---
         
-        // Game State - 20% slower speed (4), 10% bigger size (44)
+        // Game State
         const player = { x: 600, y: 600, speed: 4, size: 44 };
         const mapSize = 1200;
         const obstacles = [];
@@ -784,10 +795,10 @@
         function initView4() {
             document.getElementById('view-3').style.display = 'none';
             document.getElementById('view-4').style.display = 'flex';
-            document.getElementById('controls-container').style.display = 'block'; // Show Controls
+            document.getElementById('controls-container').style.display = 'block'; 
             
             generateMap();
-            showPopup("Try to find them all!", 20000); // 20s Popup
+            showPopup("Try to find them all!", 20000); 
             
             // Start Loop
             requestAnimationFrame(gameLoop);
@@ -801,10 +812,8 @@
             playerEl.style.left = player.x + 'px';
             playerEl.style.top = player.y + 'px';
             
-            // 1. House (Center)
             createObject('🏠', 560, 500, 80, true); 
 
-            // 2. Obstacles (Trees/Rocks)
             const obsTypes = ['🌲','🌳','🪨'];
             for(let i=0; i<40; i++) {
                 let x = Math.random() * (mapSize - 50);
@@ -813,7 +822,6 @@
                 createObject(obsTypes[Math.floor(Math.random()*3)], x, y, 40, true);
             }
 
-            // 3. Decorations (Flowers) - Walkable
             const decTypes = ['🌹','🌷','🌻'];
             for(let i=0; i<60; i++) {
                 let x = Math.random() * (mapSize - 30);
@@ -821,7 +829,6 @@
                 createObject(decTypes[Math.floor(Math.random()*3)], x, y, 25, false);
             }
 
-            // 4. Collectibles (Mushrooms)
             for(let i=0; i<15; i++) {
                 let placed = false;
                 while(!placed) {
@@ -924,22 +931,21 @@
             }
         }
 
+        // --- VICTORY & VIEW 5 ---
         function gameWon() {
-            // Hide Game UI, Show Victory Screen
+            // Hide Map, Show Trophy
             document.getElementById('game-ui').style.display = 'none';
             document.getElementById('controls-container').style.display = 'none';
             document.getElementById('victory-screen').style.display = 'flex';
         }
 
-        // --- VIEW 5 TRANSITION ---
         function showView5() {
             document.getElementById('view-4').style.display = 'none';
             document.getElementById('view-5').style.display = 'flex';
             
-            // Start Crazy Rain
             startHeartRain();
 
-            // Reveal Note after 3 seconds
+            // Reveal Note after 3s
             setTimeout(() => {
                 document.getElementById('final-note').style.opacity = '1';
             }, 3000);
@@ -949,18 +955,19 @@
             const rainContainer = document.getElementById('rain-container');
             const emojis = ['🩷', '💖', '💝', '💕', '💗'];
             
-            for (let i = 0; i < 100; i++) {
+            // 300 hearts as requested
+            for (let i = 0; i < 300; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
                     heart.classList.add('rain-heart');
                     heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
                     heart.style.left = Math.random() * 100 + 'vw';
-                    heart.style.animationDuration = (Math.random() * 2 + 1) + 's'; // 1-3s drop
+                    // Slower: 2s to 5s fall duration
+                    heart.style.animationDuration = (Math.random() * 3 + 2) + 's'; 
                     rainContainer.appendChild(heart);
                     
-                    // Remove after falling
-                    setTimeout(() => heart.remove(), 3000);
-                }, i * 30); // Stagger creation
+                    setTimeout(() => heart.remove(), 5000);
+                }, i * 10); // Dense rain (fast generation)
             }
         }
 
