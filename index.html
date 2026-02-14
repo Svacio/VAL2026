@@ -11,7 +11,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
+            -webkit-tap-highlight-color: transparent; 
         }
 
         :root {
@@ -28,7 +28,7 @@
             height: 100vh;
             overflow: hidden;
             display: flex;
-            flex-direction: column; /* Changed for controller placement */
+            flex-direction: column; 
             justify-content: center;
             align-items: center;
             color: var(--text-dark);
@@ -70,7 +70,7 @@
             flex-direction: column;
             height: auto; 
             position: relative; 
-            margin-bottom: 20px; /* Space for controller */
+            margin-bottom: 20px; 
         }
 
         /* --- VIEW 1 STYLES --- */
@@ -304,25 +304,24 @@
             max-width: 300px;
             border: 4px solid var(--pastel-white);
             border-radius: 15px;
-            overflow: hidden; /* Clips the big map */
+            overflow: hidden; 
             position: relative;
-            background: #a8d5ba; /* Fallback green */
+            background: #a8d5ba;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
         }
 
         /* The Big Map */
         #gameMap {
             position: absolute;
-            width: 1200px; /* 4x the viewport ~300px */
+            width: 1200px; 
             height: 1200px;
             background-color: #c5e1a5;
             background-image: radial-gradient(#dcedc8 15%, transparent 16%), radial-gradient(#dcedc8 15%, transparent 16%);
             background-size: 60px 60px;
             background-position: 0 0, 30px 30px;
-            transition: transform 0.1s linear; /* Smooth camera follow */
+            transition: transform 0.1s linear; 
         }
 
-        /* Objects on map */
         .map-obj {
             position: absolute;
             display: flex;
@@ -331,22 +330,22 @@
             user-select: none;
         }
 
-        /* Player */
+        /* Player - UPDATED SIZE */
         #cowPlayer {
             position: absolute;
-            width: 40px;
-            height: 40px;
-            font-size: 30px;
+            width: 44px; /* INCREASED by 10% */
+            height: 44px;
+            font-size: 35px;
             z-index: 10;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: top 0.1s linear, left 0.1s linear; /* Smooth movement */
+            transition: top 0.1s linear, left 0.1s linear; 
         }
 
         /* --- CONTROLS (D-PAD) --- */
         #controls-container {
-            display: none; /* Hidden until view 4 */
+            display: none; 
             margin-top: 10px;
             position: relative;
             width: 150px;
@@ -373,7 +372,6 @@
 
         .d-pad-btn:active { background: var(--strong-pink); color: white; }
 
-        /* Positioning buttons in a cross */
         #btn-up { top: 0; left: 50px; }
         #btn-down { bottom: 0; left: 50px; }
         #btn-left { top: 50px; left: 0; }
@@ -694,8 +692,8 @@
 
         // --- VIEW 4: MUSHROOM GAME LOGIC ---
         
-        // Game State
-        const player = { x: 600, y: 600, speed: 5, size: 40 }; // Center of 1200x1200 map
+        // Game State - UPDATED SPEED AND SIZE
+        const player = { x: 600, y: 600, speed: 4, size: 44 }; // Speed 5->4, Size 40->44
         const mapSize = 1200;
         const obstacles = [];
         const collectibles = [];
@@ -728,7 +726,6 @@
             for(let i=0; i<40; i++) {
                 let x = Math.random() * (mapSize - 50);
                 let y = Math.random() * (mapSize - 50);
-                // Simple distance check to keep away from spawn/house
                 if(Math.abs(x - 600) < 100 && Math.abs(y - 600) < 100) continue;
                 createObject(obsTypes[Math.floor(Math.random()*3)], x, y, 40, true);
             }
@@ -747,7 +744,6 @@
                 while(!placed) {
                     let x = Math.random() * (mapSize - 30);
                     let y = Math.random() * (mapSize - 30);
-                    // Ensure it doesn't overlap house/spawn heavily
                     if(Math.abs(x - 600) > 50 || Math.abs(y - 600) > 50) {
                         const el = createObject('🍄', x, y, 30, false, true);
                         collectibles.push({ el, x, y, size: 30, collected: false });
@@ -783,7 +779,6 @@
             if (keys.left) dx -= player.speed;
             if (keys.right) dx += player.speed;
 
-            // Diagonal normalization (optional for simple movement)
             if(dx !== 0 && dy !== 0) {
                 dx *= 0.707;
                 dy *= 0.707;
@@ -801,23 +796,22 @@
             const newY = player.y + dy;
             const playerEl = document.getElementById('cowPlayer');
 
-            // Mirror logic
-            if (dx < 0) playerEl.style.transform = "scaleX(-1)";
-            if (dx > 0) playerEl.style.transform = "scaleX(1)";
+            // UPDATED MIRROR LOGIC
+            if (dx < 0) playerEl.style.transform = "scaleX(1)"; // Left = Normal Face (Left)
+            if (dx > 0) playerEl.style.transform = "scaleX(-1)"; // Right = Flipped Face (Right)
 
             // Boundary Check
             if (newX < 0 || newX > mapSize - player.size || newY < 0 || newY > mapSize - player.size) return;
 
             // Obstacle Collision
-            // A simple box overlap check
-            const pRect = { x: newX + 5, y: newY + 5, w: player.size - 10, h: player.size - 10 }; // shrinking hitbox slightly
+            const pRect = { x: newX + 5, y: newY + 5, w: player.size - 10, h: player.size - 10 }; 
             
             for (let obs of obstacles) {
                 if (pRect.x < obs.x + obs.size &&
                     pRect.x + pRect.w > obs.x &&
                     pRect.y < obs.y + obs.size &&
                     pRect.y + pRect.h > obs.y) {
-                    return; // Collision detected, stop movement
+                    return; 
                 }
             }
 
@@ -835,11 +829,9 @@
             const viewport = document.querySelector('.game-viewport');
             const map = document.getElementById('gameMap');
             
-            // Center player in viewport
             let camX = -(player.x - viewport.clientWidth / 2 + player.size / 2);
             let camY = -(player.y - viewport.clientHeight / 2 + player.size / 2);
 
-            // Clamp camera to map bounds
             const minX = -(mapSize - viewport.clientWidth);
             const minY = -(mapSize - viewport.clientHeight);
             
@@ -856,19 +848,16 @@
                 let m = collectibles[i];
                 if (m.collected) continue;
 
-                // Collision check logic
                 if (player.x < m.x + m.size &&
                     player.x + player.size > m.x &&
                     player.y < m.y + m.size &&
                     player.y + player.size > m.y) {
                     
-                    // Collect!
                     m.collected = true;
                     m.el.style.display = 'none';
                     collectedCount++;
                     document.getElementById('mushroomCounter').innerText = `🍄: ${collectedCount}/15`;
                     
-                    // Play sound
                     eatSound.currentTime = 0;
                     eatSound.play().catch(e=>{});
 
@@ -897,7 +886,7 @@
         addTouchLogic(btnLeft, 'left');
         addTouchLogic(btnRight, 'right');
 
-        // Keyboard Support (Bonus)
+        // Keyboard Support
         window.addEventListener('keydown', (e) => {
             if(e.key === 'ArrowUp') keys.up = true;
             if(e.key === 'ArrowDown') keys.down = true;
