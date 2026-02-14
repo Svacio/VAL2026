@@ -52,6 +52,21 @@
             100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } 
         }
 
+        /* --- NEW: RAIN HEART ANIMATION --- */
+        .rain-heart {
+            position: fixed;
+            top: -50px;
+            font-size: 2rem;
+            animation: fallDown linear forwards;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        @keyframes fallDown {
+            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+        }
+
         /* Main Container/Glass Card */
         .glass-card {
             background: rgba(255, 255, 255, 0.4);
@@ -381,6 +396,47 @@
         #btn-left { top: 50px; left: 0; }
         #btn-right { top: 50px; right: 0; }
 
+        /* --- VICTORY SCREEN (Hidden inside View 4) --- */
+        #victory-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            padding: 20px;
+            text-align: center;
+            height: 100%;
+            width: 100%;
+        }
+
+        #victory-screen .trophy {
+            font-size: 80px;
+            animation: pulse-glow 2s infinite;
+        }
+
+        /* --- VIEW 5 STYLES (FINAL NOTE) --- */
+        #view-5 {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            height: 100%;
+        }
+
+        #final-note {
+            background: #fff0f5;
+            padding: 25px;
+            border-radius: 15px;
+            border: 2px dashed var(--strong-pink);
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-dark);
+            opacity: 0; /* Start hidden for animation */
+            transition: opacity 2s ease-in;
+        }
+
     </style>
 </head>
 <body>
@@ -393,6 +449,7 @@
     </audio>
 
     <div id="hearts-container"></div>
+    <div id="rain-container"></div>
 
     <div class="glass-card">
         
@@ -497,15 +554,31 @@
         </div>
 
         <div id="view-4">
-            <div class="header-bar">
-                <span>Mushroom Picking</span>
-                <span id="mushroomCounter">🍄: 0/15</span>
-            </div>
-            
-            <div class="game-viewport">
-                <div id="gameMap">
-                    <div id="cowPlayer">🐄</div>
+            <div id="game-interface" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                <div class="header-bar">
+                    <span>Mushroom Picking</span>
+                    <span id="mushroomCounter">🍄: 0/15</span>
                 </div>
+                
+                <div class="game-viewport">
+                    <div id="gameMap">
+                        <div id="cowPlayer">🐄</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="victory-screen">
+                <h1 style="font-size: 1.8rem; margin-bottom: 20px;">Congrats Sayang !!!</h1>
+                <div class="trophy">🏆</div>
+                <button class="shiny-btn" onclick="showView5()" style="margin-top: 20px;">Last but not least..</button>
+            </div>
+        </div>
+
+        <div id="view-5">
+            <div id="final-note">
+                <p>I spent my entire life wishing for someone like you.. So don't ever think for a second that I would ever give up on you. Not today. Not tommorow... Not for the rest of my life.</p>
+                <br>
+                <p style="font-weight: bold; color: var(--strong-pink);">I love you sangat sangat sayangku 🩷</p>
             </div>
         </div>
 
@@ -538,13 +611,10 @@
         const bgMusic = document.getElementById('bgMusic');
         const eatSound = document.getElementById('eatSound');
         
-        // 1. Try generic autoplay (often blocked on mobile)
         bgMusic.play().catch(e => console.log("Autoplay blocked, waiting for interaction"));
 
-        // 2. Failsafe for mobile: Unlock audio on first touch/click
         function startAudio() {
             bgMusic.play().then(() => {
-                // Remove these listeners once audio starts successfully
                 document.removeEventListener('click', startAudio);
                 document.removeEventListener('touchstart', startAudio);
             }).catch(e => {});
@@ -896,9 +966,49 @@
                     eatSound.play().catch(e=>{});
 
                     if(collectedCount === 15) {
-                        alert("You found them all! Happy Valentine's Day Sayangku! ❤️");
+                        gameWon();
                     }
                 }
+            }
+        }
+
+        // --- VICTORY & VIEW 5 ---
+        function gameWon() {
+            // Hide Game UI, Show Victory Screen
+            document.getElementById('game-interface').style.display = 'none';
+            document.getElementById('controls-container').style.display = 'none';
+            document.getElementById('victory-screen').style.display = 'flex';
+        }
+
+        function showView5() {
+            document.getElementById('view-4').style.display = 'none';
+            document.getElementById('view-5').style.display = 'flex';
+            
+            startHeartRain();
+
+            // Reveal Note after 3s
+            setTimeout(() => {
+                document.getElementById('final-note').style.opacity = '1';
+            }, 3000);
+        }
+
+        function startHeartRain() {
+            const rainContainer = document.getElementById('rain-container');
+            const emojis = ['🩷', '💖', '💝', '💕', '💗'];
+            
+            // 300 hearts as requested
+            for (let i = 0; i < 300; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.classList.add('rain-heart');
+                    heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                    heart.style.left = Math.random() * 100 + 'vw';
+                    // Slower: 2s to 5s fall duration
+                    heart.style.animationDuration = (Math.random() * 3 + 2) + 's'; 
+                    rainContainer.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 5000);
+                }, i * 10); // Dense rain (fast generation)
             }
         }
 
