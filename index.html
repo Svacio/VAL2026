@@ -52,7 +52,7 @@
             100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } 
         }
 
-        /* --- NEW: RAIN HEART ANIMATION --- */
+        /* --- HEART RAIN EFFECT --- */
         .rain-heart {
             position: fixed;
             top: -50px;
@@ -207,7 +207,6 @@
         }
         
         .flip-card-front {
-            /* Background colors are set inline in the HTML */
             color: var(--text-dark);
             background-position: center;
             background-repeat: no-repeat;
@@ -327,6 +326,7 @@
             position: relative;
             background: #a8d5ba;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            flex-shrink: 0; 
         }
 
         /* The Big Map */
@@ -362,41 +362,7 @@
             transition: top 0.1s linear, left 0.1s linear; 
         }
 
-        /* --- CONTROLS (D-PAD) --- */
-        #controls-container {
-            display: none; 
-            margin-top: 10px;
-            position: relative;
-            width: 150px;
-            height: 150px;
-            z-index: 20;
-        }
-
-        .d-pad-btn {
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.5);
-            border: 2px solid var(--strong-pink);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--strong-pink);
-            cursor: pointer;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        .d-pad-btn:active { background: var(--strong-pink); color: white; }
-
-        #btn-up { top: 0; left: 50px; }
-        #btn-down { bottom: 0; left: 50px; }
-        #btn-left { top: 50px; left: 0; }
-        #btn-right { top: 50px; right: 0; }
-
-        /* --- VICTORY SCREEN (Hidden inside View 4) --- */
+        /* Victory Screen */
         #victory-screen {
             display: none;
             flex-direction: column;
@@ -433,9 +399,43 @@
             font-size: 1.1rem;
             line-height: 1.6;
             color: var(--text-dark);
-            opacity: 0; /* Start hidden for animation */
+            opacity: 0; /* Hidden initially */
             transition: opacity 2s ease-in;
         }
+
+        /* --- CONTROLS (D-PAD) --- */
+        #controls-container {
+            display: none; 
+            margin-top: 10px;
+            position: relative;
+            width: 150px;
+            height: 150px;
+            z-index: 20;
+        }
+
+        .d-pad-btn {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid var(--strong-pink);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--strong-pink);
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .d-pad-btn:active { background: var(--strong-pink); color: white; }
+
+        #btn-up { top: 0; left: 50px; }
+        #btn-down { bottom: 0; left: 50px; }
+        #btn-left { top: 50px; left: 0; }
+        #btn-right { top: 50px; right: 0; }
 
     </style>
 </head>
@@ -554,7 +554,7 @@
         </div>
 
         <div id="view-4">
-            <div id="game-interface" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px;">
+            <div id="game-ui" style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 10px;">
                 <div class="header-bar">
                     <span>Mushroom Picking</span>
                     <span id="mushroomCounter">🍄: 0/15</span>
@@ -646,7 +646,7 @@
         function checkPassword() {
             const input = passwordInput.value.trim();
             if (input === '🍄') {
-                // FIX FOR MOBILE AUDIO: Play music explicitly on button click
+                // Audio force play
                 bgMusic.play().catch(e => console.log("Audio start error:", e));
 
                 setTimeout(() => {
@@ -684,9 +684,10 @@
             document.querySelector('.glass-card').style.height = 'auto';
         }
 
-        // --- VIEW 3: TIC TAC TOE ---
+        // --- VIEW 3: TIC TAC TOE (FIXED TURN LOGIC) ---
         let board = Array(9).fill('');
         let gameActive = false;
+        let isPlayerTurn = false; // Prevents spam
         let score = 0;
         const winningScore = 3;
         const playerIcon = '🐮';
@@ -703,14 +704,20 @@
             btn.disabled = true;
             btn.classList.remove('shiny-btn');
             btn.style.background = '#ccc';
+            
             gameActive = true;
+            isPlayerTurn = false; // Lock player input at start
             setTimeout(computerMove, 300);
         }
 
         function handleCellClick(index) {
-            if (!gameActive || board[index] !== '') return;
+            // Check turn flag here
+            if (!gameActive || board[index] !== '' || !isPlayerTurn) return;
+            
             placeMark(index, playerIcon);
             if (checkWin()) return;
+            
+            isPlayerTurn = false; // Lock input
             setTimeout(computerMove, 500);
         }
 
@@ -727,7 +734,9 @@
             if (emptyIndices.length > 0) {
                 const randomIdx = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
                 placeMark(randomIdx, computerIcon);
-                checkWin();
+                if (checkWin()) return;
+                
+                isPlayerTurn = true; // Unlock input
             }
         }
 
@@ -767,7 +776,7 @@
                 btn.disabled = false;
                 btn.style.background = '';
                 btn.classList.add('shiny-btn');
-                btn.onclick = initView4; // Proceed to View 4
+                btn.onclick = initView4; 
             } else {
                 btn.innerText = "START GAME";
                 btn.disabled = false;
@@ -786,7 +795,7 @@
 
         // --- VIEW 4: MUSHROOM GAME LOGIC ---
         
-        // Game State - 20% slower speed (4), 10% bigger size (44)
+        // Game State
         const player = { x: 600, y: 600, speed: 4, size: 44 };
         const mapSize = 1200;
         const obstacles = [];
@@ -798,29 +807,24 @@
         function initView4() {
             document.getElementById('view-3').style.display = 'none';
             document.getElementById('view-4').style.display = 'flex';
-            document.getElementById('controls-container').style.display = 'block'; // Show Controls
+            document.getElementById('controls-container').style.display = 'block'; 
             
             generateMap();
-            showPopup("Try to find them all!", 20000); // 20s Popup
+            showPopup("Try to find them all!", 20000); 
             
-            // Start Loop
             requestAnimationFrame(gameLoop);
         }
 
         function generateMap() {
             const mapEl = document.getElementById('gameMap');
-            // Clear everything except player
             mapEl.innerHTML = '<div id="cowPlayer">🐄</div>';
             
-            // FIX: Set Initial Position immediately
             const playerEl = document.getElementById('cowPlayer');
             playerEl.style.left = player.x + 'px';
             playerEl.style.top = player.y + 'px';
             
-            // 1. House (Center)
             createObject('🏠', 560, 500, 80, true); 
 
-            // 2. Obstacles (Trees/Rocks)
             const obsTypes = ['🌲','🌳','🪨'];
             for(let i=0; i<40; i++) {
                 let x = Math.random() * (mapSize - 50);
@@ -829,7 +833,6 @@
                 createObject(obsTypes[Math.floor(Math.random()*3)], x, y, 40, true);
             }
 
-            // 3. Decorations (Flowers) - Walkable
             const decTypes = ['🌹','🌷','🌻'];
             for(let i=0; i<60; i++) {
                 let x = Math.random() * (mapSize - 30);
@@ -837,7 +840,6 @@
                 createObject(decTypes[Math.floor(Math.random()*3)], x, y, 25, false);
             }
 
-            // 4. Collectibles (Mushrooms)
             for(let i=0; i<15; i++) {
                 let placed = false;
                 while(!placed) {
@@ -850,8 +852,6 @@
                     }
                 }
             }
-            
-            // FIX: Update camera immediately to prevent jump
             updateCamera();
         }
 
@@ -865,31 +865,19 @@
             el.style.height = size + 'px';
             el.style.fontSize = (size * 0.8) + 'px';
             document.getElementById('gameMap').appendChild(el);
-            
-            if(isSolid) {
-                obstacles.push({ x, y, size });
-            }
+            if(isSolid) obstacles.push({ x, y, size });
             return el;
         }
 
         function gameLoop() {
-            let dx = 0;
-            let dy = 0;
-
+            let dx = 0; let dy = 0;
             if (keys.up) dy -= player.speed;
             if (keys.down) dy += player.speed;
             if (keys.left) dx -= player.speed;
             if (keys.right) dx += player.speed;
 
-            if(dx !== 0 && dy !== 0) {
-                dx *= 0.707;
-                dy *= 0.707;
-            }
-
-            if (dx !== 0 || dy !== 0) {
-                movePlayer(dx, dy);
-            }
-
+            if(dx !== 0 && dy !== 0) { dx *= 0.707; dy *= 0.707; }
+            if (dx !== 0 || dy !== 0) movePlayer(dx, dy);
             requestAnimationFrame(gameLoop);
         }
 
@@ -898,26 +886,17 @@
             const newY = player.y + dy;
             const playerEl = document.getElementById('cowPlayer');
 
-            // REVERSED MIRROR LOGIC
-            if (dx < 0) playerEl.style.transform = "scaleX(1)"; // Left = Normal Face
-            if (dx > 0) playerEl.style.transform = "scaleX(-1)"; // Right = Flipped Face
+            if (dx < 0) playerEl.style.transform = "scaleX(1)"; 
+            if (dx > 0) playerEl.style.transform = "scaleX(-1)"; 
 
-            // Boundary Check
             if (newX < 0 || newX > mapSize - player.size || newY < 0 || newY > mapSize - player.size) return;
 
-            // Obstacle Collision
             const pRect = { x: newX + 5, y: newY + 5, w: player.size - 10, h: player.size - 10 }; 
-            
             for (let obs of obstacles) {
-                if (pRect.x < obs.x + obs.size &&
-                    pRect.x + pRect.w > obs.x &&
-                    pRect.y < obs.y + obs.size &&
-                    pRect.y + pRect.h > obs.y) {
-                    return; 
-                }
+                if (pRect.x < obs.x + obs.size && pRect.x + pRect.w > obs.x &&
+                    pRect.y < obs.y + obs.size && pRect.y + pRect.h > obs.y) return; 
             }
 
-            // Move
             player.x = newX;
             player.y = newY;
             playerEl.style.left = player.x + 'px';
@@ -930,18 +909,12 @@
         function updateCamera() {
             const viewport = document.querySelector('.game-viewport');
             const map = document.getElementById('gameMap');
-            
             let camX = -(player.x - viewport.clientWidth / 2 + player.size / 2);
             let camY = -(player.y - viewport.clientHeight / 2 + player.size / 2);
-
             const minX = -(mapSize - viewport.clientWidth);
             const minY = -(mapSize - viewport.clientHeight);
-            
-            if (camX > 0) camX = 0;
-            if (camX < minX) camX = minX;
-            if (camY > 0) camY = 0;
-            if (camY < minY) camY = minY;
-
+            if (camX > 0) camX = 0; if (camX < minX) camX = minX;
+            if (camY > 0) camY = 0; if (camY < minY) camY = minY;
             map.style.transform = `translate(${camX}px, ${camY}px)`;
         }
 
@@ -950,17 +923,14 @@
                 let m = collectibles[i];
                 if (m.collected) continue;
 
-                if (player.x < m.x + m.size &&
-                    player.x + player.size > m.x &&
-                    player.y < m.y + m.size &&
-                    player.y + player.size > m.y) {
+                if (player.x < m.x + m.size && player.x + player.size > m.x &&
+                    player.y < m.y + m.size && player.y + player.size > m.y) {
                     
                     m.collected = true;
                     m.el.style.display = 'none';
                     collectedCount++;
                     document.getElementById('mushroomCounter').innerText = `🍄: ${collectedCount}/15`;
                     
-                    // FIX: Play sound immediately on collision
                     eatSound.pause();
                     eatSound.currentTime = 0;
                     eatSound.play().catch(e=>{});
@@ -974,8 +944,7 @@
 
         // --- VICTORY & VIEW 5 ---
         function gameWon() {
-            // Hide Game UI, Show Victory Screen
-            document.getElementById('game-interface').style.display = 'none';
+            document.getElementById('game-ui').style.display = 'none';
             document.getElementById('controls-container').style.display = 'none';
             document.getElementById('victory-screen').style.display = 'flex';
         }
@@ -986,7 +955,6 @@
             
             startHeartRain();
 
-            // Reveal Note after 3s
             setTimeout(() => {
                 document.getElementById('final-note').style.opacity = '1';
             }, 3000);
@@ -996,19 +964,17 @@
             const rainContainer = document.getElementById('rain-container');
             const emojis = ['🩷', '💖', '💝', '💕', '💗'];
             
-            // 300 hearts as requested
             for (let i = 0; i < 300; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
                     heart.classList.add('rain-heart');
                     heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
                     heart.style.left = Math.random() * 100 + 'vw';
-                    // Slower: 2s to 5s fall duration
                     heart.style.animationDuration = (Math.random() * 3 + 2) + 's'; 
                     rainContainer.appendChild(heart);
                     
                     setTimeout(() => heart.remove(), 5000);
-                }, i * 10); // Dense rain (fast generation)
+                }, i * 10); 
             }
         }
 
@@ -1030,7 +996,6 @@
         addTouchLogic(btnLeft, 'left');
         addTouchLogic(btnRight, 'right');
 
-        // Keyboard Support
         window.addEventListener('keydown', (e) => {
             if(e.key === 'ArrowUp') keys.up = true;
             if(e.key === 'ArrowDown') keys.down = true;
