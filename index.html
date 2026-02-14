@@ -1,1052 +1,1877 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>Valentine Message to Sayangku</title>
+
     <style>
+
         /* CSS Reset & Variables */
+
         * {
+
             box-sizing: border-box;
+
             margin: 0;
+
             padding: 0;
+
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
             -webkit-tap-highlight-color: transparent; 
+
         }
+
+
 
         :root {
+
             --pastel-pink: #ffd1dc;
+
             --pastel-green: #b8e0d2;
+
             --pastel-white: #fdfdfd;
+
             --text-dark: #4a4a4a;
+
             --error-red: #ff9eaa;
+
             --strong-pink: #ff6b81;
+
         }
+
+
 
         body {
+
             background: linear-gradient(135deg, var(--pastel-pink) 0%, var(--pastel-green) 100%);
+
             height: 100vh;
+
             overflow: hidden;
+
             display: flex;
+
             flex-direction: column; 
+
             justify-content: center;
+
             align-items: center;
+
             color: var(--text-dark);
+
             position: relative;
+
         }
+
+
 
         /* Animated Hearts Background */
+
         .heart {
+
             position: fixed;
+
             bottom: -50px;
+
             font-size: 1.5rem;
+
             animation: floatUp linear infinite;
+
             z-index: 0; 
+
             pointer-events: none;
+
         }
+
+
 
         @keyframes floatUp {
+
             0% { transform: translateY(0) scale(0.5); opacity: 0; }
+
             5% { opacity: 0.8; }
+
             95% { opacity: 0.8; }
+
             100% { transform: translateY(-120vh) scale(1.5); opacity: 0; } 
+
         }
 
-        /* --- NEW: HEART RAIN ANIMATION --- */
-        .rain-heart {
-            position: fixed;
-            top: -50px;
-            font-size: 2rem;
-            animation: fallDown linear forwards;
-            z-index: 9999;
-            pointer-events: none;
-        }
 
-        @keyframes fallDown {
-            0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
-        }
 
         /* Main Container/Glass Card */
+
         .glass-card {
+
             background: rgba(255, 255, 255, 0.4);
+
             backdrop-filter: blur(10px);
+
             -webkit-backdrop-filter: blur(10px);
+
             border: 1px solid rgba(255, 255, 255, 0.6);
+
             border-radius: 20px;
+
             padding: 15px; 
+
             width: 90%;
+
             max-width: 400px;
+
             text-align: center;
+
             z-index: 10;
+
             box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+
             transition: all 0.5s ease;
+
             display: flex;
+
             flex-direction: column;
+
             height: auto; 
+
             position: relative; 
+
             margin-bottom: 20px; 
+
         }
+
+
 
         /* --- VIEW 1 STYLES --- */
+
         #view-1 {
+
             display: flex;
+
             flex-direction: column;
+
             gap: 15px;
+
             padding: 1rem; 
+
         }
+
+
 
         h1 { font-size: 1.8rem; color: var(--strong-pink); margin-bottom: 5px; }
+
         p { font-size: 0.95rem; line-height: 1.4; }
+
         .question { font-weight: bold; font-size: 1.1rem; margin: 10px 0; }
 
+
+
         input {
+
             padding: 12px;
+
             border-radius: 10px;
+
             border: 2px solid var(--pastel-white);
+
             background: rgba(255, 255, 255, 0.7);
+
             font-size: 1.2rem;
+
             text-align: center;
+
             outline: none;
+
             transition: 0.3s;
+
         }
+
         input:focus { border-color: var(--strong-pink); }
 
+
+
         .hint-text {
+
             color: #e63946;
+
             font-size: 0.85rem;
+
             min-height: 40px;
+
             font-style: italic;
+
         }
+
+
 
         /* Button Styles */
+
         button {
+
             background: var(--strong-pink);
+
             color: white;
+
             border: none;
+
             padding: 12px 25px;
+
             border-radius: 25px;
+
             font-size: 1.2rem;
+
             cursor: pointer;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             gap: 10px;
+
             margin: 10px auto 0;
+
             box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4);
+
             transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
+
         }
+
         button:hover:not(.shiny-btn):not(:disabled) {
+
             transform: scale(1.05);
+
             background: #ff4760;
+
         }
+
         button:active { transform: scale(0.95); }
+
         button:disabled {
+
             background: #ccc;
+
             cursor: not-allowed;
+
             transform: none;
+
             box-shadow: none;
+
         }
+
+
 
         .shiny-btn {
+
             background: #4CAF50 !important;
+
             box-shadow: 0 0 20px rgba(76, 175, 80, 0.7), inset 0 0 10px rgba(255,255,255,0.4) !important;
+
             animation: pulse-glow 1.5s infinite !important;
+
         }
+
+
 
         @keyframes pulse-glow {
+
             0% { transform: scale(1); }
+
             50% { transform: scale(1.08); }
+
             100% { transform: scale(1); }
+
         }
 
+
+
         /* --- VIEW 2 STYLES --- */
+
         #view-2 {
+
             display: none;
+
             height: 55vh; 
+
             overflow-y: auto;
+
             padding: 5px; 
+
             margin-bottom: 5px; 
+
         }
+
         #view-2::-webkit-scrollbar { display: none; }
+
         #view-2 { -ms-overflow-style: none; scrollbar-width: none; }
+
+
 
         .card-grid { display: flex; flex-direction: column; gap: 15px; }
 
+
+
         .flip-card {
+
             background-color: transparent;
+
             width: 100%;
+
             aspect-ratio: 1 / 1;
+
             perspective: 1000px;
+
             cursor: pointer;
+
         }
+
         .flip-card-inner {
+
             position: relative;
+
             width: 100%;
+
             height: 100%;
+
             text-align: center;
+
             transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+
             transform-style: preserve-3d;
+
             border-radius: 15px;
+
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
         }
+
         .flip-card.flipped .flip-card-inner { transform: rotateY(180deg); }
+
         
+
         .flip-card-front, .flip-card-back {
+
             position: absolute;
+
             width: 100%;
+
             height: 100%;
+
             -webkit-backface-visibility: hidden;
+
             backface-visibility: hidden;
+
             border-radius: 15px;
+
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
+
             justify-content: center;
+
             padding: 20px;
+
         }
+
         
+
         .flip-card-front {
-            /* Background colors handled inline in HTML to match user request */
+
+            /* Background colors are set inline in the HTML */
+
             color: var(--text-dark);
+
             background-position: center;
+
             background-repeat: no-repeat;
+
             background-size: 60%; 
+
         }
+
         
+
         .click-hint {
+
             position: absolute;
+
             bottom: 15px;
+
             background: rgba(255,255,255,0.7);
+
             padding: 5px 15px;
+
             border-radius: 15px;
+
             font-size: 0.8rem;
+
             font-weight: bold;
+
             color: var(--strong-pink);
+
             animation: pulse 1.5s infinite;
+
         }
+
         @keyframes pulse {
+
             0% { transform: scale(1); }
+
             50% { transform: scale(1.05); }
+
             100% { transform: scale(1); }
+
         }
+
         
+
         .flip-card-back {
+
             background-color: var(--pastel-green);
+
             color: var(--text-dark);
+
             transform: rotateY(180deg);
+
             font-size: 1.1rem;
+
             padding: 20px; 
+
         }
+
+
 
         /* --- VIEW 3 STYLES (TIC TAC TOE) --- */
+
         #view-3 {
+
             display: none;
+
             flex-direction: column;
+
             gap: 15px;
+
             padding: 10px;
+
         }
 
+
+
         .header-bar {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             font-weight: bold;
+
             font-size: 1rem;
+
             color: var(--strong-pink);
+
             border-bottom: 2px solid rgba(255,255,255,0.5);
+
             padding-bottom: 10px;
+
             width: 100%;
+
         }
+
+
 
         #gameCaption { font-size: 1rem; margin: 5px 0; min-height: 24px; }
 
+
+
         .game-board {
+
             display: grid;
+
             grid-template-columns: repeat(3, 1fr);
+
             grid-template-rows: repeat(3, 1fr);
+
             gap: 5px;
+
             margin: 10px auto;
+
             width: 100%;
+
             max-width: 300px;
+
             aspect-ratio: 1 / 1;
+
         }
+
+
 
         .cell {
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             font-size: 2.5rem;
+
             line-height: 1; 
+
             cursor: pointer;
+
             background: rgba(255,255,255,0.3);
+
             border-radius: 10px;
+
             transition: background 0.3s;
+
             border: 2px solid var(--strong-pink);
+
         }
+
         .cell:hover { background: rgba(255,255,255,0.6); }
+
         .cell.taken { cursor: default; }
 
+
+
         .popup-msg {
+
             position: absolute;
+
             top: -60px;
+
             left: 50%;
+
             transform: translateX(-50%);
+
             background: white;
+
             padding: 10px 20px;
+
             border-radius: 20px;
+
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+
             font-weight: bold;
+
             color: var(--strong-pink);
+
             white-space: nowrap;
+
             z-index: 100;
+
             animation: popIn 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
         }
+
         @keyframes popIn {
+
             0% { transform: translateX(-50%) scale(0); opacity: 0; }
+
             100% { transform: translateX(-50%) scale(1); opacity: 1; }
+
         }
+
+
 
         /* --- VIEW 4 STYLES (RPG GAME) --- */
+
         #view-4 {
+
             display: none;
+
             flex-direction: column;
+
             gap: 10px;
+
             padding: 5px;
+
             align-items: center;
+
         }
+
+
 
         /* The Window (Frame) */
+
         .game-viewport {
+
             width: 100%;
+
             aspect-ratio: 1 / 1;
+
             max-width: 300px;
+
             border: 4px solid var(--pastel-white);
+
             border-radius: 15px;
+
             overflow: hidden; 
+
             position: relative;
+
             background: #a8d5ba;
+
             box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
-            flex-shrink: 0; 
+
         }
+
+
 
         /* The Big Map */
+
         #gameMap {
+
             position: absolute;
+
             width: 1200px; 
+
             height: 1200px;
+
             background-color: #c5e1a5;
+
             background-image: radial-gradient(#dcedc8 15%, transparent 16%), radial-gradient(#dcedc8 15%, transparent 16%);
+
             background-size: 60px 60px;
+
             background-position: 0 0, 30px 30px;
+
             transition: transform 0.1s linear; 
+
         }
+
+
 
         .map-obj {
+
             position: absolute;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             user-select: none;
+
         }
 
-        /* Player - SIZE 44px */
+
+
+        /* Player */
+
         #cowPlayer {
+
             position: absolute;
+
             width: 44px; 
+
             height: 44px;
+
             font-size: 35px;
+
             z-index: 10;
+
             display: flex;
+
             justify-content: center;
+
             align-items: center;
+
             transition: top 0.1s linear, left 0.1s linear; 
+
         }
 
-        /* --- VICTORY SCREEN (Hidden inside View 4) --- */
-        #victory-screen {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
-            text-align: center;
-            height: 100%;
-            width: 100%;
-        }
 
-        #victory-screen .trophy {
-            font-size: 80px;
-            animation: pulse-glow 2s infinite;
-        }
-
-        /* --- VIEW 5 STYLES (FINAL NOTE) --- */
-        #view-5 {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            text-align: center;
-            height: 100%;
-        }
-
-        #final-note {
-            background: #fff0f5;
-            padding: 25px;
-            border-radius: 15px;
-            border: 2px dashed var(--strong-pink);
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: var(--text-dark);
-            opacity: 0; /* Hidden initially */
-            transition: opacity 2s ease-in;
-        }
 
         /* --- CONTROLS (D-PAD) --- */
+
         #controls-container {
+
             display: none; 
+
             margin-top: 10px;
+
             position: relative;
+
             width: 150px;
+
             height: 150px;
+
             z-index: 20;
+
         }
 
+
+
         .d-pad-btn {
+
             position: absolute;
+
             width: 50px;
+
             height: 50px;
+
             background: rgba(255, 255, 255, 0.5);
+
             border: 2px solid var(--strong-pink);
+
             border-radius: 10px;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             font-size: 1.5rem;
+
             color: var(--strong-pink);
+
             cursor: pointer;
+
             user-select: none;
+
             -webkit-user-select: none;
+
         }
+
+
 
         .d-pad-btn:active { background: var(--strong-pink); color: white; }
 
+
+
         #btn-up { top: 0; left: 50px; }
+
         #btn-down { bottom: 0; left: 50px; }
+
         #btn-left { top: 50px; left: 0; }
+
         #btn-right { top: 50px; right: 0; }
 
+
+
     </style>
+
 </head>
+
 <body>
 
+
+
     <audio id="bgMusic" loop autoplay>
+
         <source src="song.mp3" type="audio/mpeg">
+
     </audio>
+
     <audio id="eatSound">
+
         <source src="eat.mp3" type="audio/mpeg">
+
     </audio>
+
+
 
     <div id="hearts-container"></div>
-    <div id="rain-container"></div>
+
+
 
     <div class="glass-card">
+
         
+
         <div id="view-1">
+
             <p style="color: #ff6b81; font-weight: bold; font-size: 0.9rem; margin-bottom: 5px;">Made with 🩷 by Adam</p>
+
             <h1>Valentine Message for Sayangku</h1>
+
             <p>To unlock secret message provide a correct password (emoji)</p>
+
             <p class="question">What does the 🐮 like?</p>
+
             
+
             <input type="text" id="passwordInput" placeholder="Enter emoji..." autocomplete="off">
+
             <div id="hintBox" class="hint-text"></div>
+
             
+
             <button id="unlockBtn" onclick="checkPassword()">
+
                 <span id="lockIcon">🔒</span> <span id="btnText">Locked</span>
+
             </button>
+
         </div>
+
+
 
         <div id="view-2">
+
             <h2>Some special words 🩷</h2>
+
             <br>
+
             <div class="card-grid">
+
                 
+
                 <div class="flip-card" onclick="flip(this)">
+
                     <div class="flip-card-inner">
+
                         <div class="flip-card-front" style="background-color: #ffe4e1; background-image: url('flowers.png');"><span class="click-hint">Tap to flip ✨</span></div>
+
                         <div class="flip-card-back"><p>Can't wait for the time, when I can finally bring Lien her favourite flowers, at the times, when you're feeling sick, or in pain, in happy moments and special occasions juga... or just spontaneously to express my endless gratitude towards you for being such an amazing person</p></div>
+
                     </div>
+
                 </div>
+
                 
+
                 <div class="flip-card" onclick="flip(this)">
+
                     <div class="flip-card-inner">
+
                         <div class="flip-card-front" style="background-color: #e0f2f1; background-image: url('holdheart.png');"><span class="click-hint">Tap to flip ✨</span></div>
+
                         <div class="flip-card-back"><p>Besides the flowers, I want to give you all the love I have, cuz you deserve it all &lt;3</p></div>
+
                     </div>
+
                 </div>
+
                 
+
                 <div class="flip-card" onclick="flip(this)">
+
                     <div class="flip-card-inner">
+
                         <div class="flip-card-front" style="background-color: #fff3e0; background-image: url('shinycow.png');"><span class="click-hint">Tap to flip ✨</span></div>
+
                         <div class="flip-card-back"><p>Still can't believe what a lucky men I am, not only you have extraordinary and wise mind, but so breathtaking on the outside juga ✨</p></div>
+
                     </div>
+
                 </div>
+
                 
+
                 <div class="flip-card" onclick="flip(this)">
+
                     <div class="flip-card-inner">
+
                         <div class="flip-card-front" style="background-color: #f3e5f5; background-image: url('holdmushroom.png');"><span class="click-hint">Tap to flip ✨</span></div>
+
                         <div class="flip-card-back"><p>Adam mau to always hold each other back... just like lien holds 🍄 at night.</p></div>
+
                     </div>
+
                 </div>
+
                 
+
                 <div class="flip-card" onclick="flip(this)">
+
                     <div class="flip-card-inner">
+
                         <div class="flip-card-front" style="background-color: #e3f2fd; background-image: url('hornycow.png');"><span class="click-hint">Tap to flip ✨</span></div>
+
                         <div class="flip-card-back"><p>Let's always be honest about our feelings... either if its sedih, rindu, joy, love or even horny 😊</p></div>
+
                     </div>
+
                 </div>
+
                 
+
                 <div class="flip-card" onclick="flip(this)">
+
                     <div class="flip-card-inner">
+
                         <div class="flip-card-front" style="background-color: #f1f8e9; background-image: url('yesyou.png');"><span class="click-hint">Tap to flip ✨</span></div>
+
                         <div class="flip-card-back"><p>AND REMEMBER!!! You're always enough and never too much for adam ❤️</p></div>
+
                     </div>
+
                 </div>
+
                 
+
                 <div class="flip-card" onclick="flip(this)">
+
                     <div class="flip-card-inner">
+
                         <div class="flip-card-front" style="background-color: #fff8e1; background-image: url('turtle.png');"><span class="click-hint">Tap to flip ✨</span></div>
+
                         <div class="flip-card-back"><p>Itu adam 98% of the time with Lien 🤭</p></div>
+
                     </div>
+
                 </div>
+
                 
+
                 <div class="flip-card" onclick="flip(this)">
+
                     <div class="flip-card-inner">
+
                         <div class="flip-card-front" style="background-color: #fce4ec; background-image: url('ringcat.png');"><span class="click-hint">Tap to flip ✨</span></div>
+
                         <div class="flip-card-back"><p>You are mine... my wifey 🥰</p></div>
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
+
         <button id="moreBtn" class="shiny-btn" onclick="showView3()" style="display: none; margin: 15px auto 0; width: 80%; font-size: 1.1rem;">
+
             There is still more 🤭
+
         </button>
 
+
+
         <div id="view-3">
+
             <div class="header-bar">
+
                 <span>Tic Tac Toe Game</span>
+
                 <span id="scoreCounter">🏆: 0/3</span>
+
             </div>
+
             <p id="gameCaption">Win 3 times to proceed 🤭</p>
+
             <div class="game-board" id="gameBoard">
+
                 <div class="cell" onclick="handleCellClick(0)"></div>
+
                 <div class="cell" onclick="handleCellClick(1)"></div>
+
                 <div class="cell" onclick="handleCellClick(2)"></div>
+
                 <div class="cell" onclick="handleCellClick(3)"></div>
+
                 <div class="cell" onclick="handleCellClick(4)"></div>
+
                 <div class="cell" onclick="handleCellClick(5)"></div>
+
                 <div class="cell" onclick="handleCellClick(6)"></div>
+
                 <div class="cell" onclick="handleCellClick(7)"></div>
+
                 <div class="cell" onclick="handleCellClick(8)"></div>
+
             </div>
+
             <button id="gameStartBtn" class="shiny-btn" onclick="startGame()">START GAME</button>
+
         </div>
+
+
 
         <div id="view-4">
+
+            <div class="header-bar">
+
+                <span>Mushroom Picking</span>
+
+                <span id="mushroomCounter">🍄: 0/15</span>
+
+            </div>
+
             
-            <div id="game-ui">
-                <div class="header-bar">
-                    <span>Mushroom Picking</span>
-                    <span id="mushroomCounter">🍄: 0/15</span>
-                </div>
-                
-                <div class="game-viewport">
-                    <div id="gameMap">
-                        <div id="cowPlayer">🐄</div>
-                    </div>
-                </div>
-            </div>
 
-            <div id="victory-screen">
-                <h1 style="font-size: 1.8rem; margin-bottom: 20px;">Congrats Sayang !!!</h1>
-                <div class="trophy">🏆</div>
-                <button class="shiny-btn" onclick="showView5()" style="margin-top: 20px;">Last but not least..</button>
+            <div class="game-viewport">
+
+                <div id="gameMap">
+
+                    <div id="cowPlayer">🐄</div>
+
+                </div>
+
             </div>
 
         </div>
 
-        <div id="view-5">
-            <div id="final-note">
-                <p>I spent my entire life wishing for someone like you.. So don't ever think for a second that I would ever give up on you. Not today. Not tommorow... Not for the rest of my life.</p>
-                <br>
-                <p style="font-weight: bold; color: var(--strong-pink);">I love you sangat sangat sayangku 🩷</p>
-            </div>
-        </div>
+
 
     </div> 
+
     
+
     <div id="controls-container">
+
         <div class="d-pad-btn" id="btn-up">▲</div>
+
         <div class="d-pad-btn" id="btn-left">◀</div>
+
         <div class="d-pad-btn" id="btn-right">▶</div>
+
         <div class="d-pad-btn" id="btn-down">▼</div>
+
     </div>
 
+
+
     <script>
+
         // --- GLOBAL SETUP ---
+
         const heartsContainer = document.getElementById('hearts-container');
+
         const heartEmojis = ['🤍', '💚', '🩷','✨'];
+
         
+
         for (let i = 0; i < 20; i++) {
+
             let heart = document.createElement('div');
+
             heart.classList.add('heart');
+
             heart.innerText = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+
             heart.style.left = Math.random() * 100 + 'vw';
+
             heart.style.animationDuration = (Math.random() * 6 + 6) + 's'; 
+
             heart.style.animationDelay = (Math.random() * -15) + 's'; 
+
             heart.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
+
             heartsContainer.appendChild(heart);
+
         }
+
+
 
         // --- AUDIO SETUP ---
+
         const bgMusic = document.getElementById('bgMusic');
+
         const eatSound = document.getElementById('eatSound');
+
         
+
+        // 1. Try generic autoplay (often blocked on mobile)
+
         bgMusic.play().catch(e => console.log("Autoplay blocked, waiting for interaction"));
 
+
+
+        // 2. Failsafe for mobile: Unlock audio on first touch/click
+
         function startAudio() {
+
             bgMusic.play().then(() => {
+
+                // Remove these listeners once audio starts successfully
+
                 document.removeEventListener('click', startAudio);
+
                 document.removeEventListener('touchstart', startAudio);
+
             }).catch(e => {});
+
         }
+
         document.addEventListener('click', startAudio);
+
         document.addEventListener('touchstart', startAudio);
 
+
+
         // --- VIEW 1 LOGIC ---
+
         const passwordInput = document.getElementById('passwordInput');
+
         const unlockBtn = document.getElementById('unlockBtn');
+
         const lockIcon = document.getElementById('lockIcon');
+
         const btnText = document.getElementById('btnText');
+
         const hintBox = document.getElementById('hintBox');
 
+
+
         passwordInput.addEventListener('input', function() {
+
             if (this.value.trim() === '🍄') {
+
                 lockIcon.innerText = '🔓';
+
                 btnText.innerText = 'Unlocked';
+
                 unlockBtn.classList.add('shiny-btn');
+
                 hintBox.innerText = "";
+
             } else {
+
                 lockIcon.innerText = '🔒';
+
                 btnText.innerText = 'Locked';
+
                 unlockBtn.classList.remove('shiny-btn');
+
             }
+
         });
+
+
 
         let failedAttempts = 0;
+
         function checkPassword() {
+
             const input = passwordInput.value.trim();
+
             if (input === '🍄') {
-                // MOBILE AUDIO FIX
+
+                // FIX FOR MOBILE AUDIO: Play music explicitly on button click
+
                 bgMusic.play().catch(e => console.log("Audio start error:", e));
 
+
+
                 setTimeout(() => {
+
                     document.getElementById('view-1').style.display = 'none';
+
                     document.getElementById('view-2').style.display = 'block';
+
                     document.querySelector('.glass-card').style.height = 'auto'; 
+
                 }, 300);
+
             } else {
+
                 failedAttempts++;
+
                 unlockBtn.classList.add('shake');
+
                 setTimeout(() => unlockBtn.classList.remove('shake'), 400);
+
                 hintBox.innerText = failedAttempts === 1 ? "Try again :)" : "Hint: I have a thick hard stem and a red round cap 😉";
+
             }
+
         }
+
+
 
         // --- VIEW 2 HELPER ---
+
         function flip(card) {
+
             card.classList.toggle('flipped');
+
             card.classList.add('viewed');
+
             checkAllViewed();
+
         }
+
+
 
         function checkAllViewed() {
+
             const viewed = document.querySelectorAll('.flip-card.viewed').length;
+
             const btn = document.getElementById('moreBtn');
+
             if (viewed === 8 && btn.style.display === 'none') {
+
                 btn.style.display = 'flex';
+
             }
+
         }
+
+
 
         function showView3() {
+
             document.getElementById('view-2').style.display = 'none';
+
             document.getElementById('moreBtn').style.display = 'none';
+
             document.getElementById('view-3').style.display = 'flex';
+
             document.querySelector('.glass-card').style.height = 'auto';
+
         }
+
+
 
         // --- VIEW 3: TIC TAC TOE ---
+
         let board = Array(9).fill('');
+
         let gameActive = false;
+
         let score = 0;
+
         const winningScore = 3;
+
         const playerIcon = '🐮';
+
         const computerIcon = '🍄';
+
         const winConditions = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
         const popups = ["So proud of you <3", "I always believe in you", "Never give up sayang!"];
 
+
+
         function startGame() {
+
             board.fill('');
+
             document.querySelectorAll('.cell').forEach(c => { c.innerText = ''; c.classList.remove('taken'); });
+
             document.getElementById('gameCaption').innerText = "Win 3 times to proceed 🤭";
+
             const btn = document.getElementById('gameStartBtn');
+
             btn.innerText = "YOU CAN DO IT!";
+
             btn.disabled = true;
+
             btn.classList.remove('shiny-btn');
+
             btn.style.background = '#ccc';
+
             gameActive = true;
+
             setTimeout(computerMove, 300);
+
         }
+
+
 
         function handleCellClick(index) {
+
             if (!gameActive || board[index] !== '') return;
+
             placeMark(index, playerIcon);
+
             if (checkWin()) return;
+
             setTimeout(computerMove, 500);
+
         }
+
+
 
         function placeMark(index, mark) {
+
             board[index] = mark;
+
             const cell = document.getElementsByClassName('cell')[index];
+
             cell.innerText = mark;
+
             cell.classList.add('taken');
+
         }
+
+
 
         function computerMove() {
+
             if (!gameActive) return;
+
             const emptyIndices = board.map((v, i) => v === '' ? i : null).filter(v => v !== null);
+
             if (emptyIndices.length > 0) {
+
                 const randomIdx = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+
                 placeMark(randomIdx, computerIcon);
+
                 checkWin();
+
             }
+
         }
+
+
 
         function checkWin() {
+
             let roundWon = false;
+
             let winner = null;
+
             for (let i = 0; i < winConditions.length; i++) {
+
                 const [a, b, c] = winConditions[i];
+
                 if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+
                     roundWon = true;
+
                     winner = board[a];
+
                     break;
+
                 }
+
             }
+
             if (roundWon) { endGame(winner); return true; }
+
             if (!board.includes('')) { endGame('draw'); return true; }
+
             return false;
+
         }
+
+
 
         function endGame(winner) {
+
             gameActive = false;
+
             const caption = document.getElementById('gameCaption');
+
             const btn = document.getElementById('gameStartBtn');
+
             if (winner === playerIcon) {
+
                 score++;
+
                 document.getElementById('scoreCounter').innerText = `🏆: ${score}/${winningScore}`;
+
                 caption.innerText = "🐮 won!";
+
                 showPopup(popups[Math.floor(Math.random() * popups.length)], 5000);
+
             } else if (winner === computerIcon) {
+
                 caption.innerText = "🍄 won!";
+
             } else {
+
                 caption.innerText = "It's a draw!";
+
             }
+
             
+
             if (score >= winningScore) {
+
                 btn.innerText = "Ready for more?";
+
                 btn.disabled = false;
+
                 btn.style.background = '';
+
                 btn.classList.add('shiny-btn');
+
                 btn.onclick = initView4; // Proceed to View 4
+
             } else {
+
                 btn.innerText = "START GAME";
+
                 btn.disabled = false;
+
                 btn.style.background = '';
+
                 btn.classList.add('shiny-btn');
+
             }
+
         }
+
+
 
         function showPopup(text, duration) {
+
             const popupEl = document.createElement('div');
+
             popupEl.classList.add('popup-msg');
+
             popupEl.innerText = text;
+
             document.querySelector('.glass-card').appendChild(popupEl);
+
             setTimeout(() => popupEl.remove(), duration);
+
         }
+
+
 
         // --- VIEW 4: MUSHROOM GAME LOGIC ---
+
         
+
         // Game State - 20% slower speed (4), 10% bigger size (44)
+
         const player = { x: 600, y: 600, speed: 4, size: 44 };
+
         const mapSize = 1200;
+
         const obstacles = [];
+
         const collectibles = [];
+
         let collectedCount = 0;
+
         let gameLoopId;
+
         const keys = { up: false, down: false, left: false, right: false };
 
+
+
         function initView4() {
+
             document.getElementById('view-3').style.display = 'none';
+
             document.getElementById('view-4').style.display = 'flex';
+
             document.getElementById('controls-container').style.display = 'block'; // Show Controls
+
             
+
             generateMap();
+
             showPopup("Try to find them all!", 20000); // 20s Popup
+
             
+
             // Start Loop
+
             requestAnimationFrame(gameLoop);
+
         }
+
+
 
         function generateMap() {
+
             const mapEl = document.getElementById('gameMap');
+
             // Clear everything except player
+
             mapEl.innerHTML = '<div id="cowPlayer">🐄</div>';
+
             
+
             // FIX: Set Initial Position immediately
+
             const playerEl = document.getElementById('cowPlayer');
+
             playerEl.style.left = player.x + 'px';
+
             playerEl.style.top = player.y + 'px';
+
             
+
             // 1. House (Center)
+
             createObject('🏠', 560, 500, 80, true); 
 
+
+
             // 2. Obstacles (Trees/Rocks)
+
             const obsTypes = ['🌲','🌳','🪨'];
+
             for(let i=0; i<40; i++) {
+
                 let x = Math.random() * (mapSize - 50);
+
                 let y = Math.random() * (mapSize - 50);
+
                 if(Math.abs(x - 600) < 100 && Math.abs(y - 600) < 100) continue;
+
                 createObject(obsTypes[Math.floor(Math.random()*3)], x, y, 40, true);
+
             }
+
+
 
             // 3. Decorations (Flowers) - Walkable
+
             const decTypes = ['🌹','🌷','🌻'];
+
             for(let i=0; i<60; i++) {
+
                 let x = Math.random() * (mapSize - 30);
+
                 let y = Math.random() * (mapSize - 30);
+
                 createObject(decTypes[Math.floor(Math.random()*3)], x, y, 25, false);
+
             }
+
+
 
             // 4. Collectibles (Mushrooms)
+
             for(let i=0; i<15; i++) {
+
                 let placed = false;
+
                 while(!placed) {
+
                     let x = Math.random() * (mapSize - 30);
+
                     let y = Math.random() * (mapSize - 30);
+
                     if(Math.abs(x - 600) > 50 || Math.abs(y - 600) > 50) {
+
                         const el = createObject('🍄', x, y, 30, false, true);
+
                         collectibles.push({ el, x, y, size: 30, collected: false });
+
                         placed = true;
+
                     }
+
                 }
+
             }
+
             
+
             // FIX: Update camera immediately to prevent jump
+
             updateCamera();
+
         }
+
+
 
         function createObject(emoji, x, y, size, isSolid, isCollectable = false) {
+
             const el = document.createElement('div');
+
             el.classList.add('map-obj');
+
             el.innerText = emoji;
+
             el.style.left = x + 'px';
+
             el.style.top = y + 'px';
+
             el.style.width = size + 'px';
+
             el.style.height = size + 'px';
+
             el.style.fontSize = (size * 0.8) + 'px';
+
             document.getElementById('gameMap').appendChild(el);
+
             
+
             if(isSolid) {
+
                 obstacles.push({ x, y, size });
+
             }
+
             return el;
+
         }
+
+
 
         function gameLoop() {
+
             let dx = 0;
+
             let dy = 0;
 
+
+
             if (keys.up) dy -= player.speed;
+
             if (keys.down) dy += player.speed;
+
             if (keys.left) dx -= player.speed;
+
             if (keys.right) dx += player.speed;
 
+
+
             if(dx !== 0 && dy !== 0) {
+
                 dx *= 0.707;
+
                 dy *= 0.707;
+
             }
+
+
 
             if (dx !== 0 || dy !== 0) {
+
                 movePlayer(dx, dy);
+
             }
+
+
 
             requestAnimationFrame(gameLoop);
+
         }
+
+
 
         function movePlayer(dx, dy) {
+
             const newX = player.x + dx;
+
             const newY = player.y + dy;
+
             const playerEl = document.getElementById('cowPlayer');
 
+
+
             // REVERSED MIRROR LOGIC
+
             if (dx < 0) playerEl.style.transform = "scaleX(1)"; // Left = Normal Face
+
             if (dx > 0) playerEl.style.transform = "scaleX(-1)"; // Right = Flipped Face
 
+
+
             // Boundary Check
+
             if (newX < 0 || newX > mapSize - player.size || newY < 0 || newY > mapSize - player.size) return;
 
+
+
             // Obstacle Collision
+
             const pRect = { x: newX + 5, y: newY + 5, w: player.size - 10, h: player.size - 10 }; 
+
             
+
             for (let obs of obstacles) {
+
                 if (pRect.x < obs.x + obs.size &&
+
                     pRect.x + pRect.w > obs.x &&
+
                     pRect.y < obs.y + obs.size &&
+
                     pRect.y + pRect.h > obs.y) {
+
                     return; 
+
                 }
+
             }
+
+
 
             // Move
+
             player.x = newX;
+
             player.y = newY;
+
             playerEl.style.left = player.x + 'px';
+
             playerEl.style.top = player.y + 'px';
 
+
+
             updateCamera();
+
             checkCollectibles();
+
         }
+
+
 
         function updateCamera() {
+
             const viewport = document.querySelector('.game-viewport');
+
             const map = document.getElementById('gameMap');
+
             
+
             let camX = -(player.x - viewport.clientWidth / 2 + player.size / 2);
+
             let camY = -(player.y - viewport.clientHeight / 2 + player.size / 2);
 
+
+
             const minX = -(mapSize - viewport.clientWidth);
+
             const minY = -(mapSize - viewport.clientHeight);
+
             
+
             if (camX > 0) camX = 0;
+
             if (camX < minX) camX = minX;
+
             if (camY > 0) camY = 0;
+
             if (camY < minY) camY = minY;
 
+
+
             map.style.transform = `translate(${camX}px, ${camY}px)`;
+
         }
+
+
 
         function checkCollectibles() {
+
             for (let i = 0; i < collectibles.length; i++) {
+
                 let m = collectibles[i];
+
                 if (m.collected) continue;
 
+
+
                 if (player.x < m.x + m.size &&
+
                     player.x + player.size > m.x &&
+
                     player.y < m.y + m.size &&
+
                     player.y + player.size > m.y) {
+
                     
+
                     m.collected = true;
+
                     m.el.style.display = 'none';
+
                     collectedCount++;
+
                     document.getElementById('mushroomCounter').innerText = `🍄: ${collectedCount}/15`;
+
                     
+
                     // FIX: Play sound immediately on collision
+
                     eatSound.pause();
+
                     eatSound.currentTime = 0;
+
                     eatSound.play().catch(e=>{});
 
+
+
                     if(collectedCount === 15) {
-                        gameWon();
+
+                        alert("You found them all! Happy Valentine's Day Sayangku! ❤️");
+
                     }
+
                 }
+
             }
+
         }
 
-        // --- VICTORY & VIEW 5 ---
-        function gameWon() {
-            // Hide Map, Show Trophy
-            document.getElementById('game-ui').style.display = 'none';
-            document.getElementById('controls-container').style.display = 'none';
-            document.getElementById('victory-screen').style.display = 'flex';
-        }
 
-        function showView5() {
-            document.getElementById('view-4').style.display = 'none';
-            document.getElementById('view-5').style.display = 'flex';
-            
-            startHeartRain();
-
-            // Reveal Note after 3s
-            setTimeout(() => {
-                document.getElementById('final-note').style.opacity = '1';
-            }, 3000);
-        }
-
-        function startHeartRain() {
-            const rainContainer = document.getElementById('rain-container');
-            const emojis = ['🩷', '💖', '💝', '💕', '💗'];
-            
-            // 300 hearts as requested
-            for (let i = 0; i < 300; i++) {
-                setTimeout(() => {
-                    const heart = document.createElement('div');
-                    heart.classList.add('rain-heart');
-                    heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-                    heart.style.left = Math.random() * 100 + 'vw';
-                    // Slower: 2s to 5s fall duration
-                    heart.style.animationDuration = (Math.random() * 3 + 2) + 's'; 
-                    rainContainer.appendChild(heart);
-                    
-                    setTimeout(() => heart.remove(), 5000);
-                }, i * 10); // Dense rain (fast generation)
-            }
-        }
 
         // --- CONTROLLER EVENTS ---
+
         const btnUp = document.getElementById('btn-up');
+
         const btnDown = document.getElementById('btn-down');
+
         const btnLeft = document.getElementById('btn-left');
+
         const btnRight = document.getElementById('btn-right');
 
+
+
         function addTouchLogic(btn, dir) {
+
             btn.addEventListener('mousedown', () => keys[dir] = true);
+
             btn.addEventListener('mouseup', () => keys[dir] = false);
+
             btn.addEventListener('touchstart', (e) => { e.preventDefault(); keys[dir] = true; });
+
             btn.addEventListener('touchend', (e) => { e.preventDefault(); keys[dir] = false; });
+
         }
 
+
+
         addTouchLogic(btnUp, 'up');
+
         addTouchLogic(btnDown, 'down');
+
         addTouchLogic(btnLeft, 'left');
+
         addTouchLogic(btnRight, 'right');
 
+
+
         // Keyboard Support
+
         window.addEventListener('keydown', (e) => {
+
             if(e.key === 'ArrowUp') keys.up = true;
+
             if(e.key === 'ArrowDown') keys.down = true;
+
             if(e.key === 'ArrowLeft') keys.left = true;
+
             if(e.key === 'ArrowRight') keys.right = true;
-        });
-        window.addEventListener('keyup', (e) => {
-            if(e.key === 'ArrowUp') keys.up = false;
-            if(e.key === 'ArrowDown') keys.down = false;
-            if(e.key === 'ArrowLeft') keys.left = false;
-            if(e.key === 'ArrowRight') keys.right = false;
+
         });
 
+        window.addEventListener('keyup', (e) => {
+
+            if(e.key === 'ArrowUp') keys.up = false;
+
+            if(e.key === 'ArrowDown') keys.down = false;
+
+            if(e.key === 'ArrowLeft') keys.left = false;
+
+            if(e.key === 'ArrowRight') keys.right = false;
+
+        });
+
+
+
     </script>
+
 </body>
+
 </html>
